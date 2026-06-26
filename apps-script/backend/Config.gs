@@ -19,7 +19,7 @@ const CONFIG = {
   // Google Spreadsheet
   // ===============================
 
-  SPREADSHEET_ID: "GANTI_DENGAN_SPREADSHEET_ID_ANDA",
+  SPREADSHEET_ID: "1Z2iVoQyhcs0Ce7oOovq4F4KJxbjRrIF-muYJYuZEQ2A",
 
   // ===============================
   // Sheet Name
