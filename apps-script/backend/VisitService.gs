@@ -104,6 +104,45 @@ function createVisit(memberId){
   ]);
 
   updateLastVisit(memberId);
+/**
+ * Riwayat Visit Member
+ */
+function getVisitHistory(memberId){
+
+  const sheet = getSheet(CONFIG.SHEET_VISITS);
+
+  const values = sheet.getDataRange().getValues();
+
+  if(values.length <= 1){
+
+    return [];
+
+  }
+
+  const history = [];
+
+  for(let i = 1; i < values.length; i++){
+
+    if(values[i][1] === memberId){
+
+      history.push(values[i]);
+
+    }
+
+  }
+
+  return history;
+
+}
+
+/**
+ * Jumlah Visit Member
+ */
+function getVisitCount(memberId){
+
+  return getVisitHistory(memberId).length;
+
+}
 
   updateMemberLevel(memberId);
 
