@@ -1,75 +1,70 @@
-/**
- * ==========================================
- * Neighbor Place CRM
- * Visit Service
- * Version 1.0.0 Production
- * ==========================================
- */
+/* =====================================================
+   Neighbor Place CRM
+   Visit Service
+===================================================== */
 
 /**
- * Ambil seluruh visit
+ * Ambil Semua Visit
  */
-function getVisits(){
+function getVisits() {
 
   const sheet = getSheet(CONFIG.SHEET_VISITS);
 
   const values = sheet.getDataRange().getValues();
 
-  if(values.length <= 1){
+  if (values.length <= 1) {
 
     return [];
 
   }
 
-  const result = [];
+  const data = [];
 
-  for(let i=1;i<values.length;i++){
+  for (let i = 1; i < values.length; i++) {
 
     const row = values[i];
 
     const member = getMember(row[1]);
 
-    result.push([
+    data.push([
 
-      row[0],                               // VisitID
+      row[0],
 
-      member ? member[1] : "-",             // Nama Member
+      member ? member[1] : "-",
 
-      formatDate(row[2]),                   // Visit Date
+      formatDate(row[2]),
 
-      row[3],                               // Visit Number
+      row[3],
 
-      row[4],                               // Reward Status
+      row[4],
 
-      row[5]                                // Created At
+      row[5]
 
     ]);
 
   }
 
-  return result;
+  return data;
 
 }
+
 /**
  * Tambah Visit
  */
-function createVisit(memberId){
+function createVisit(memberId) {
 
   const member = getMember(memberId);
 
-  if(!member){
+  if (!member) {
 
     return {
-
-      success:false,
-
-      message:"Member tidak ditemukan."
-
+      success: false,
+      message: "Member tidak ditemukan."
     };
 
   }
 
-  const visitSheet = getSheet(CONFIG.SHEET_VISITS);
+  const sheet = getSheet(CONFIG.SHEET_VISITS);
 
   const visitHistory = getVisitHistory(memberId);
 
@@ -79,15 +74,12 @@ function createVisit(memberId){
 
   const visitDate = new Date();
 
-  let rewardStatus = "Progress";
+  const rewardStatus =
+    visitNumber >= CONFIG.REWARD_TARGET
+      ? "Ready"
+      : "Progress";
 
-  if(visitNumber >= CONFIG.REWARD_TARGET){
-
-    rewardStatus = "Ready";
-
-  }
-
-  visitSheet.appendRow([
+  sheet.appendRow([
 
     visitId,
 
@@ -103,21 +95,38 @@ function createVisit(memberId){
 
   ]);
 
- 
+  updateLastVisit(memberId);
+
+  updateMemberLevel(memberId);
+
+  checkReward(memberId);
+
+  logCreateVisit(visitId);
+
+  return {
+
+    success: true,
+
+    message: "Visit berhasil ditambahkan."
+
+  };
+
+}
+
 /**
- * Update Last Visit
+ * Update Last Visit Member
  */
-function updateLastVisit(memberId){
+function updateLastVisit(memberId) {
 
   const sheet = getSheet(CONFIG.SHEET_MEMBERS);
 
   const values = sheet.getDataRange().getValues();
 
-  for(let i=1;i<values.length;i++){
+  for (let i = 1; i < values.length; i++) {
 
-    if(values[i][0]===memberId){
+    if (values[i][0] === memberId) {
 
-      sheet.getRange(i+1,9).setValue(now());
+      sheet.getRange(i + 1, 9).setValue(now());
 
       return true;
 
@@ -128,17 +137,17 @@ function updateLastVisit(memberId){
   return false;
 
 }
- updateLastVisit(memberId);
+
 /**
  * Riwayat Visit Member
  */
-function getVisitHistory(memberId){
+function getVisitHistory(memberId) {
 
   const sheet = getSheet(CONFIG.SHEET_VISITS);
 
   const values = sheet.getDataRange().getValues();
 
-  if(values.length <= 1){
+  if (values.length <= 1) {
 
     return [];
 
@@ -146,15 +155,30 @@ function getVisitHistory(memberId){
 
   const history = [];
 
-  for(let i = 1; i < values.length; i++){
+  for (let i = 1; i < values.length; i++) {
 
-    if(values[i][1] === memberId){
+    const row = values[i];
 
-      history.push(values[i]);
+    if (row[1] === memberId) {
+
+      history.push({
+        visitId: row[0],
+        memberId: row[1],
+        visitDate: row[2],
+        visitNumber: row[3],
+        rewardStatus: row[4],
+        createdAt: row[5]
+      });
 
     }
 
   }
+
+  history.sort(function(a, b) {
+
+    return new Date(b.visitDate) - new Date(a.visitDate);
+
+  });
 
   return history;
 
@@ -163,24 +187,66 @@ function getVisitHistory(memberId){
 /**
  * Jumlah Visit Member
  */
-function getVisitCount(memberId){
+function getVisitCount(memberId) {
 
   return getVisitHistory(memberId).length;
 
 }
 
-  updateMemberLevel(memberId);
+/**
+ * Cari Visit berdasarkan ID
+ */
+function findVisit(visitId) {
 
-  checkReward(memberId);
+  const sheet = getSheet(CONFIG.SHEET_VISITS);
 
-  logCreateVisit(visitId);
+  const values = sheet.getDataRange().getValues();
 
-  return {
+  for (let i = 1; i < values.length; i++) {
 
-    success:true,
+    if (values[i][0] === visitId) {
 
-    message:"Visit berhasil ditambahkan."
+      return values[i];
 
-  };
+    }
+
+  }
+
+  return null;
+
+}
+
+/**
+ * Cek apakah member sudah visit hari ini
+ */
+function memberHasVisitToday(memberId) {
+
+  const history = getVisitHistory(memberId);
+
+  const today = Utilities.formatDate(
+
+    new Date(),
+
+    Session.getScriptTimeZone(),
+
+    "yyyy-MM-dd"
+
+  );
+
+  return history.some(function(item) {
+
+    const visitDate = Utilities.formatDate(
+
+      new Date(item.visitDate),
+
+      Session.getScriptTimeZone(),
+
+      "yyyy-MM-dd"
+
+    );
+
+    return visitDate === today;
+
+  });
 
 }
