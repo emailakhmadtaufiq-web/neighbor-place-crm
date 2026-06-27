@@ -249,8 +249,6 @@ function loadDashboard(){
 
     .withFailureHandler(serverError)
 
-    })
-
     .getDashboard();
 
 }
@@ -787,8 +785,6 @@ function loadVisits(){
 
     .withFailureHandler(serverError)
 
-    })
-
     .getVisits();
 
 }
@@ -911,8 +907,6 @@ function saveVisit(){
 
     .withFailureHandler(serverError)
 
-    })
-
     .createVisit(memberId);
 
 }
@@ -1010,9 +1004,7 @@ function loadRewards(){
     })
 
     .withFailureHandler(serverError)
-
-    })
-
+       
     .getRewards();
 
 }
