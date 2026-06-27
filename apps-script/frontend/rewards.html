@@ -1,0 +1,117 @@
+<section id="rewardsPage" class="page" style="display:none;">
+
+    <div class="topbar">
+
+        <div>
+
+            <h2>Rewards</h2>
+
+            <small>Manajemen Reward Member</small>
+
+        </div>
+
+        <button
+            class="btn btn-success"
+            onclick="loadRewards()">
+
+            <i class="bi bi-arrow-clockwise"></i>
+
+            Refresh
+
+        </button>
+
+    </div>
+
+    <div class="table-card">
+
+        <div class="row mb-4">
+
+            <div class="col-md-5">
+
+                <input
+                    id="searchReward"
+                    class="form-control"
+                    placeholder="Cari Member ID">
+
+            </div>
+
+            <div class="col-md-3">
+
+                <select
+                    id="rewardStatus"
+                    class="form-select">
+
+                    <option value="">Semua Status</option>
+
+                    <option>Ready</option>
+
+                    <option>Claimed</option>
+
+                    <option>Expired</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button
+                    class="btn btn-outline-success w-100">
+
+                    Filter
+
+                </button>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button
+                    class="btn btn-outline-secondary w-100"
+                    onclick="loadRewards()">
+
+                    Refresh
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Reward ID</th>
+
+                        <th>Member ID</th>
+
+                        <th>Tanggal</th>
+
+                        <th>Status</th>
+
+                        <th width="150">
+
+                            Aksi
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="rewardTableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
