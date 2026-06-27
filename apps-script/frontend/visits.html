@@ -1,0 +1,167 @@
+<section id="visitsPage" class="page" style="display:none;">
+
+    <div class="topbar">
+
+        <div>
+
+            <h2>Visits</h2>
+
+            <small>Riwayat Kunjungan Member</small>
+
+        </div>
+
+        <button
+            class="btn btn-success"
+            onclick="openVisitModal()">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Tambah Visit
+
+        </button>
+
+    </div>
+
+    <div class="table-card">
+
+        <div class="row mb-4">
+
+            <div class="col-md-5">
+
+                <input
+                    id="searchVisit"
+                    class="form-control"
+                    placeholder="Cari Member ID / Nama / Plat">
+
+            </div>
+
+            <div class="col-md-3">
+
+                <input
+                    id="visitDate"
+                    type="date"
+                    class="form-control">
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button
+                    class="btn btn-outline-success w-100">
+
+                    Filter
+
+                </button>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button
+                    class="btn btn-outline-secondary w-100"
+                    onclick="loadVisits()">
+
+                    Refresh
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Visit ID</th>
+
+                        <th>Member ID</th>
+
+                        <th>Tanggal</th>
+
+                        <th>Admin</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="visitTableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+<div
+    class="modal fade"
+    id="visitModal"
+    tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Tambah Visit
+
+                </h5>
+
+                <button
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <label>Member ID</label>
+
+                    <input
+                        id="visitMemberID"
+                        class="form-control"
+                        placeholder="NP-26-000001">
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Batal
+
+                </button>
+
+                <button
+                    class="btn btn-success"
+                    onclick="saveVisit()">
+
+                    Simpan Visit
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
