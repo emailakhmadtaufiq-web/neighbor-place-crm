@@ -1,22 +1,22 @@
-<div id="membersPage" class="page" style="display:none;">
+<section id="membersPage" class="page" style="display:none;">
 
-    <div class="content">
+    <div class="topbar">
 
-        <div class="topbar">
+        <div>
 
-            <div>
+            <h2>Members</h2>
 
-                <h2>Members</h2>
+            <small>Manajemen Member Neighbor Place</small>
 
-                <small>Kelola seluruh member Neighbor Place</small>
+        </div>
 
-            </div>
+        <div class="d-flex gap-2">
 
             <button
                 class="btn btn-success"
-                id="btnTambahMember">
+                onclick="openMemberModal()">
 
-                <i class="bi bi-plus-circle"></i>
+                <i class="bi bi-person-plus-fill"></i>
 
                 Tambah Member
 
@@ -24,57 +24,210 @@
 
         </div>
 
-        <div class="table-card">
+    </div>
 
-            <div class="row mb-3">
+    <div class="table-card">
 
-                <div class="col-md-6">
+        <div class="row mb-4">
+
+            <div class="col-md-5">
+
+                <input
+                    id="searchMember"
+                    class="form-control"
+                    placeholder="Cari Nama / Plat / No HP"
+                    onkeyup="searchMemberRealtime()">
+
+            </div>
+
+            <div class="col-md-3">
+
+                <select
+                    id="filterLevel"
+                    class="form-select">
+
+                    <option value="">Semua Level</option>
+
+                    <option>Silver</option>
+
+                    <option>Gold</option>
+
+                    <option>Platinum</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <select
+                    id="filterStatus"
+                    class="form-select">
+
+                    <option value="">Semua Status</option>
+
+                    <option>Active</option>
+
+                    <option>Inactive</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button
+                    class="btn btn-outline-success w-100"
+                    onclick="loadMembers()">
+
+                    Refresh
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th width="140">Member ID</th>
+
+                        <th>Nama</th>
+
+                        <th>No HP</th>
+
+                        <th>Plat</th>
+
+                        <th>Kendaraan</th>
+
+                        <th>Level</th>
+
+                        <th>Status</th>
+
+                        <th width="220">
+
+                            Aksi
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="memberTableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- MEMBER MODAL -->
+
+<div
+    class="modal fade"
+    id="memberModal"
+    tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Tambah Member
+
+                </h5>
+
+                <button
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <label>Nama</label>
 
                     <input
-                        type="text"
-                        id="searchMember"
+                        id="memberName"
+                        class="form-control">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>No HP</label>
+
+                    <input
+                        id="memberPhone"
+                        class="form-control">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Plat Nomor</label>
+
+                    <input
+                        id="memberPlate"
                         class="form-control"
-                        placeholder="Cari Nama / Plat / No HP">
+                        style="text-transform:uppercase;">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Jenis Kendaraan</label>
+
+                    <select
+                        id="memberVehicle"
+                        class="form-select">
+
+                        <option value="">Pilih</option>
+
+                        <option>Motor</option>
+
+                        <option>Mobil</option>
+
+                    </select>
 
                 </div>
 
             </div>
 
-            <div class="table-responsive">
+            <div class="modal-footer">
 
-                <table class="table align-middle">
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
 
-                    <thead>
+                    Batal
 
-                        <tr>
+                </button>
 
-                            <th>Member ID</th>
+                <button
+                    class="btn btn-success"
+                    onclick="saveMember()">
 
-                            <th>Nama</th>
+                    Simpan
 
-                            <th>No HP</th>
-
-                            <th>Plat</th>
-
-                            <th>Kendaraan</th>
-
-                            <th>Level</th>
-
-                            <th width="170">
-
-                                Aksi
-
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="memberTableBody">
-
-                    </tbody>
-
-                </table>
+                </button>
 
             </div>
 
