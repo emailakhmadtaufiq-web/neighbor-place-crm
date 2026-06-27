@@ -103,7 +103,32 @@ function createVisit(memberId){
 
   ]);
 
-  updateLastVisit(memberId);
+ 
+/**
+ * Update Last Visit
+ */
+function updateLastVisit(memberId){
+
+  const sheet = getSheet(CONFIG.SHEET_MEMBERS);
+
+  const values = sheet.getDataRange().getValues();
+
+  for(let i=1;i<values.length;i++){
+
+    if(values[i][0]===memberId){
+
+      sheet.getRange(i+1,9).setValue(now());
+
+      return true;
+
+    }
+
+  }
+
+  return false;
+
+}
+ updateLastVisit(memberId);
 /**
  * Riwayat Visit Member
  */
@@ -157,29 +182,5 @@ function getVisitCount(memberId){
     message:"Visit berhasil ditambahkan."
 
   };
-
-}
-/**
- * Update Last Visit
- */
-function updateLastVisit(memberId){
-
-  const sheet = getSheet(CONFIG.SHEET_MEMBERS);
-
-  const values = sheet.getDataRange().getValues();
-
-  for(let i=1;i<values.length;i++){
-
-    if(values[i][0]===memberId){
-
-      sheet.getRange(i+1,9).setValue(now());
-
-      return true;
-
-    }
-
-  }
-
-  return false;
 
 }
