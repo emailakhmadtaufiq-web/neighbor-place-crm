@@ -9,64 +9,85 @@
 /**
  * Ambil seluruh visit
  */
-function getVisits() {
+function getVisits(){
 
   const sheet = getSheet(CONFIG.SHEET_VISITS);
 
-  const data = sheet.getDataRange().getValues();
+  const values = sheet.getDataRange().getValues();
 
-  if (data.length <= 1) return [];
+  if(values.length <= 1){
 
-  data.shift();
+    return [];
 
-  return data;
+  }
+
+  const result = [];
+
+  for(let i=1;i<values.length;i++){
+
+    const row = values[i];
+
+    const member = getMember(row[1]);
+
+    result.push([
+
+      row[0],                               // VisitID
+
+      member ? member[1] : "-",             // Nama Member
+
+      formatDate(row[2]),                   // Visit Date
+
+      row[3],                               // Visit Number
+
+      row[4],                               // Reward Status
+
+      row[5]                                // Created At
+
+    ]);
+
+  }
+
+  return result;
 
 }
-
-/**
- * Riwayat Visit Member
- */
-function getVisitHistory(memberId) {
-
-  return getVisits().filter(v => v[1] === memberId);
-
-}
-
-/**
- * Total Visit Member
- */
-function getVisitCount(memberId) {
-
-  return getVisitHistory(memberId).length;
-
-}
-
 /**
  * Tambah Visit
  */
-function createVisit(memberId) {
+function createVisit(memberId){
 
   const member = getMember(memberId);
 
-  if (!member) {
+  if(!member){
 
     return {
 
-      success: false,
+      success:false,
 
-      message: "Member tidak ditemukan."
+      message:"Member tidak ditemukan."
 
     };
 
   }
 
+  const visitSheet = getSheet(CONFIG.SHEET_VISITS);
+
+  const visitHistory = getVisitHistory(memberId);
+
+  const visitNumber = visitHistory.length + 1;
+
   const visitId = generateVisitID();
 
-  const visitDate = formatDate(now());
+  const visitDate = new Date();
 
-  const sheet = getSheet(CONFIG.SHEET_VISITS);
+  let rewardStatus = "Progress";
 
-  sheet.appendRow([
+  if(visitNumber >= CONFIG.REWARD_TARGET){
+
+    rewardStatus = "Ready";
+
+  }
+
+  visitSheet.appendRow([
 
     visitId,
 
@@ -74,47 +95,52 @@ function createVisit(memberId) {
 
     visitDate,
 
-    currentAdmin()
+    visitNumber,
+
+    rewardStatus,
+
+    now()
 
   ]);
 
-  updateLastVisit(memberId, visitDate);
+  updateLastVisit(memberId);
 
   updateMemberLevel(memberId);
 
   checkReward(memberId);
 
-  logVisit(memberId);
+  logCreateVisit(visitId);
 
   return {
 
-    success: true,
+    success:true,
 
-    message: "Visit berhasil ditambahkan."
+    message:"Visit berhasil ditambahkan."
 
   };
 
 }
-
 /**
  * Update Last Visit
  */
-function updateLastVisit(memberId, visitDate) {
+function updateLastVisit(memberId){
 
   const sheet = getSheet(CONFIG.SHEET_MEMBERS);
 
-  const data = sheet.getDataRange().getValues();
+  const values = sheet.getDataRange().getValues();
 
-  for (let i = 1; i < data.length; i++) {
+  for(let i=1;i<values.length;i++){
 
-    if (data[i][0] === memberId) {
+    if(values[i][0]===memberId){
 
-      sheet.getRange(i + 1, 10).setValue(visitDate);
+      sheet.getRange(i+1,9).setValue(now());
 
-      return;
+      return true;
 
     }
 
   }
+
+  return false;
 
 }
