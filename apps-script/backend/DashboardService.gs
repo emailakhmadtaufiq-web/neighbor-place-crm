@@ -2,48 +2,106 @@
  * ==========================================
  * Neighbor Place CRM
  * Dashboard Service
- * Version 1.0.0
+ * Version 1.0.0 Production
  * ==========================================
  */
 
-function getDashboardData() {
+function getDashboard() {
 
-  const members = getSheet(CONFIG.SHEET_MEMBERS)
-      .getDataRange()
-      .getValues();
+  const members = getMembers();
+  const rewards = getRewards();
+  const visits = getVisits();
 
-  members.shift();
+  const today = Utilities.formatDate(
+    new Date(),
+    Session.getScriptTimeZone(),
+    "yyyy-MM-dd"
+  );
 
-  let totalMember = members.length;
+  const month = Utilities.formatDate(
+    new Date(),
+    Session.getScriptTimeZone(),
+    "yyyy-MM"
+  );
 
-  let totalVehicle = 0;
+  let silver = 0;
   let gold = 0;
   let platinum = 0;
   let rewardReady = 0;
+  let visitToday = 0;
+  let visitMonth = 0;
+  let newMemberMonth = 0;
 
-  members.forEach(row => {
+  members.forEach(member => {
 
-    if(row[3]) totalVehicle++;
+    switch (member[7]) {
 
-    if(row[7] == CONFIG.LEVEL_GOLD)
-      gold++;
+      case CONFIG.LEVEL_SILVER:
+        silver++;
+        break;
 
-    if(row[7] == CONFIG.LEVEL_PLATINUM)
-      platinum++;
+      case CONFIG.LEVEL_GOLD:
+        gold++;
+        break;
+
+      case CONFIG.LEVEL_PLATINUM:
+        platinum++;
+        break;
+
+    }
+
+    if (
+      member[5] &&
+      member[5].toString().substring(0,7) === month
+    ) {
+      newMemberMonth++;
+    }
+
+  });
+
+  rewards.forEach(reward => {
+
+    if (reward[3] === "Ready") {
+      rewardReady++;
+    }
+
+  });
+
+  visits.forEach(visit => {
+
+    if (!visit[2]) return;
+
+    const value = visit[2].toString();
+
+    if (value.substring(0,10) === today) {
+      visitToday++;
+    }
+
+    if (value.substring(0,7) === month) {
+      visitMonth++;
+    }
 
   });
 
   return {
 
-    totalMember: totalMember,
+    totalMember: members.length,
 
-    totalVehicle: totalVehicle,
+    totalVehicle: members.length,
+
+    silver: silver,
 
     gold: gold,
 
     platinum: platinum,
 
-    rewardReady: rewardReady
+    rewardReady: rewardReady,
+
+    visitToday: visitToday,
+
+    visitMonth: visitMonth,
+
+    newMemberMonth: newMemberMonth
 
   };
 
