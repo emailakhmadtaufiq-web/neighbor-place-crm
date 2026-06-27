@@ -2,62 +2,140 @@
  * ==========================================
  * Neighbor Place CRM
  * Reward Service
- * Version 1.0.0
+ * Version 1.0.0 Production
  * ==========================================
  */
 
 /**
- * Hitung jumlah visit member
+ * Ambil seluruh reward
  */
-function getVisitCount(memberId){
+function getRewards() {
 
-  const sheet = getSheet(CONFIG.SHEET_VISITS);
+  const sheet = getSheet(CONFIG.SHEET_REWARDS);
 
   const data = sheet.getDataRange().getValues();
 
-  let total = 0;
+  if (data.length <= 1) return [];
 
-  for(let i=1;i<data.length;i++){
+  data.shift();
 
-    if(data[i][0] == memberId){
+  return data;
 
-      total++;
+}
+
+/**
+ * Cek apakah reward sudah tersedia
+ */
+function checkReward(memberId) {
+
+  const totalVisit = getVisitCount(memberId);
+
+  if (totalVisit === 0) return false;
+
+  if (totalVisit % rewardTarget() !== 0) return false;
+
+  const sheet = getSheet(CONFIG.SHEET_REWARDS);
+
+  const rewards = sheet.getDataRange().getValues();
+
+  for (let i = 1; i < rewards.length; i++) {
+
+    if (
+      rewards[i][1] === memberId &&
+      rewards[i][3] === "Ready"
+    ) {
+      return true;
+    }
+
+  }
+
+  sheet.appendRow([
+    generateRewardID(),
+    memberId,
+    formatDate(now()),
+    "Ready"
+  ]);
+
+  createLog(
+    "REWARD_READY",
+    memberId,
+    "Reward otomatis dibuat"
+  );
+
+  return true;
+
+}
+
+/**
+ * Klaim Reward
+ */
+function claimReward(rewardId) {
+
+  const sheet = getSheet(CONFIG.SHEET_REWARDS);
+
+  const data = sheet.getDataRange().getValues();
+
+  for (let i = 1; i < data.length; i++) {
+
+    if (data[i][0] === rewardId) {
+
+      sheet
+        .getRange(i + 1, 4)
+        .setValue("Claimed");
+
+      logReward(data[i][1]);
+
+      return {
+        success: true,
+        message: "Reward berhasil diklaim."
+      };
 
     }
 
   }
 
-  return total;
+  return {
+    success: false,
+    message: "Reward tidak ditemukan."
+  };
 
 }
 
 /**
- * Menentukan level member
+ * Update Level Member
  */
-function getMemberLevel(totalVisit){
+function updateMemberLevel(memberId) {
 
-  if(totalVisit >= CONFIG.PLATINUM_TARGET){
+  const totalVisit = getVisitCount(memberId);
 
-    return CONFIG.LEVEL_PLATINUM;
+  let level = CONFIG.LEVEL_SILVER;
+
+  if (totalVisit >= platinumTarget()) {
+
+    level = CONFIG.LEVEL_PLATINUM;
+
+  } else if (totalVisit >= goldTarget()) {
+
+    level = CONFIG.LEVEL_GOLD;
 
   }
 
-  if(totalVisit >= CONFIG.GOLD_TARGET){
+  const sheet = getSheet(CONFIG.SHEET_MEMBERS);
 
-    return CONFIG.LEVEL_GOLD;
+  const members = sheet.getDataRange().getValues();
+
+  for (let i = 1; i < members.length; i++) {
+
+    if (members[i][0] === memberId) {
+
+      sheet
+        .getRange(i + 1, 8)
+        .setValue(level);
+
+      return;
+
+    }
 
   }
-
-  return CONFIG.LEVEL_SILVER;
-
-}
-
-/**
- * Apakah reward sudah siap
- */
-function isRewardReady(totalVisit){
-
-  return totalVisit > 0 &&
-         totalVisit % CONFIG.REWARD_TARGET == 0;
 
 }
