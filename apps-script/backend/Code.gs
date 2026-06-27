@@ -1,21 +1,16 @@
 /**
- * ==========================================
- * Neighbor Place CRM v1.0
- * Main Entry
- * ==========================================
+ * Neighbor Place CRM
+ * Code.gs
+ * Production v1.0
  */
 
 function doGet() {
   return HtmlService
-    .createTemplateFromFile('index')
+    .createTemplateFromFile("index")
     .evaluate()
-    .setTitle('Neighbor Place CRM')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    .setTitle("Neighbor Place CRM");
 }
 
-/**
- * Include HTML File
- */
 function include(filename) {
   return HtmlService
     .createHtmlOutputFromFile(filename)
