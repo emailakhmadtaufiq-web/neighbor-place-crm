@@ -49,17 +49,15 @@ function checkReward(memberId) {
 
   }
 
-  sheet.appendRow([
-    generateRewardID(),
-    memberId,
-    formatDate(now()),
-    "Ready"
-  ]);
+sheet.appendRow([
+  generateRewardID(),
+  memberId,
+  "Free Wash",
+  "Ready",
+  ""
+]);
 
-  createLog(
-    "REWARD_READY",
-    memberId,
-    "Reward otomatis dibuat"
+  logClaimReward(rewardId);
   );
 
   return true;
