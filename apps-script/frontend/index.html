@@ -7,11 +7,9 @@
 
   <meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Neighbor Place CRM</title>
-
-  <meta name="theme-color" content="#184E3B">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -27,21 +25,68 @@
 
 <div id="app">
 
-    <?!= include("dashboard"); ?>
+    <!-- Sidebar -->
+    <aside class="sidebar">
 
-    <?!= include("members"); ?>
+        <div class="logo">
 
-    <?!= include("visits"); ?>
+            Neighbor Place
 
-    <?!= include("rewards"); ?>
+            <small>Customer Loyalty CRM</small>
 
-    <?!= include("settings"); ?>
+        </div>
+
+        <nav class="menu">
+
+            <a href="#" class="active" data-page="dashboardPage" onclick="openPage('dashboardPage')">
+                <i class="bi bi-grid"></i>
+                Dashboard
+            </a>
+
+            <a href="#" data-page="membersPage" onclick="openPage('membersPage')">
+                <i class="bi bi-people"></i>
+                Members
+            </a>
+
+            <a href="#" data-page="visitsPage" onclick="openPage('visitsPage')">
+                <i class="bi bi-car-front"></i>
+                Visits
+            </a>
+
+            <a href="#" data-page="rewardsPage" onclick="openPage('rewardsPage')">
+                <i class="bi bi-gift"></i>
+                Rewards
+            </a>
+
+            <a href="#" data-page="settingsPage" onclick="openPage('settingsPage')">
+                <i class="bi bi-gear"></i>
+                Settings
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+
+        <?!= include("dashboard"); ?>
+
+        <?!= include("members"); ?>
+
+        <?!= include("visits"); ?>
+
+        <?!= include("rewards"); ?>
+
+        <?!= include("settings"); ?>
+
+    </main>
 
 </div>
 
-<div class="modal fade"
-     id="globalModal"
-     tabindex="-1">
+<!-- Global Modal -->
+
+<div class="modal fade" id="globalModal" tabindex="-1">
 
     <div class="modal-dialog modal-lg">
 
@@ -49,10 +94,9 @@
 
             <div class="modal-header">
 
-                <h5 id="modalTitle"
-                    class="modal-title">
+                <h5 class="modal-title" id="modalTitle">
 
-                    Neighbor Place
+                    Neighbor Place CRM
 
                 </h5>
 
@@ -73,6 +117,8 @@
 
 </div>
 
+<!-- Loading -->
+
 <div id="loadingOverlay">
 
     <div class="spinner-border text-success"></div>
@@ -85,10 +131,11 @@
 
 </div>
 
+<!-- Toast -->
+
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
 
-    <div id="appToast"
-         class="toast">
+    <div id="appToast" class="toast">
 
         <div class="toast-header">
 
