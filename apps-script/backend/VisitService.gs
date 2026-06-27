@@ -2,12 +2,12 @@
  * ==========================================
  * Neighbor Place CRM
  * Visit Service
- * Version 1.0.0
+ * Version 1.0.0 Production
  * ==========================================
  */
 
 /**
- * Ambil semua data visit
+ * Ambil seluruh visit
  */
 function getVisits() {
 
@@ -24,43 +24,94 @@ function getVisits() {
 }
 
 /**
- * Tambah Visit Baru
+ * Riwayat Visit Member
  */
-function addVisit(visit){
+function getVisitHistory(memberId) {
 
-  const sheet = getSheet(CONFIG.SHEET_VISITS);
-
-  sheet.appendRow([
-    visit.memberId,
-    visit.nama,
-    visit.plat,
-    visit.tanggal,
-    visit.jenis,
-    visit.petugas
-  ]);
-
-  updateLastVisit(visit.memberId, visit.tanggal);
-
-  return true;
+  return getVisits().filter(v => v[1] === memberId);
 
 }
 
 /**
- * Update Last Visit di Sheet Members
+ * Total Visit Member
  */
-function updateLastVisit(memberId, tanggal){
+function getVisitCount(memberId) {
+
+  return getVisitHistory(memberId).length;
+
+}
+
+/**
+ * Tambah Visit
+ */
+function createVisit(memberId) {
+
+  const member = getMember(memberId);
+
+  if (!member) {
+
+    return {
+
+      success: false,
+
+      message: "Member tidak ditemukan."
+
+    };
+
+  }
+
+  const visitId = generateVisitID();
+
+  const visitDate = formatDate(now());
+
+  const sheet = getSheet(CONFIG.SHEET_VISITS);
+
+  sheet.appendRow([
+
+    visitId,
+
+    memberId,
+
+    visitDate,
+
+    currentAdmin()
+
+  ]);
+
+  updateLastVisit(memberId, visitDate);
+
+  updateMemberLevel(memberId);
+
+  checkReward(memberId);
+
+  logVisit(memberId);
+
+  return {
+
+    success: true,
+
+    message: "Visit berhasil ditambahkan."
+
+  };
+
+}
+
+/**
+ * Update Last Visit
+ */
+function updateLastVisit(memberId, visitDate) {
 
   const sheet = getSheet(CONFIG.SHEET_MEMBERS);
 
   const data = sheet.getDataRange().getValues();
 
-  for(let i=1;i<data.length;i++){
+  for (let i = 1; i < data.length; i++) {
 
-    if(data[i][0] == memberId){
+    if (data[i][0] === memberId) {
 
-      sheet.getRange(i+1,10).setValue(tanggal);
+      sheet.getRange(i + 1, 10).setValue(visitDate);
 
-      break;
+      return;
 
     }
 
