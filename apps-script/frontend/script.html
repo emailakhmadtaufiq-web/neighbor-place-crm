@@ -763,13 +763,7 @@ function quickVisit(memberId){
 
     })
 
-    .withFailureHandler(function(err){
-
-        hideLoading();
-
-        showToast(err.message);
-
-    })
+    .withFailureHandler(serverError)
 
     .createVisit(memberId);
 
@@ -1464,13 +1458,7 @@ setInterval(function(){
 /* =====================================================
    START
 ===================================================== */
-document.addEventListener("DOMContentLoaded",function(){
 
- 
-console.log(
-
-    "Neighbor Place CRM v1.0 Loaded"
-
-);
+console.log("Neighbor Place CRM v1.0 Loaded");
 
 </script>
