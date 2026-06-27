@@ -1113,13 +1113,7 @@ function claimReward(rewardId){
 
     })
 
-    .withFailureHandler(function(err){
-
-        hideLoading();
-
-        showToast(err.message);
-
-    })
+    .withFailureHandler(serverError)
 
     .claimReward(rewardId);
 
@@ -1150,7 +1144,9 @@ function loadSettings(){
         setInput("settingPlatinum",settings.PlatinumTarget);
 
     })
-
+       
+    .withFailureHandler(serverError)
+       
     .getSettings();
 
 }
