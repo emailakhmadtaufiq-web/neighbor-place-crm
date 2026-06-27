@@ -1,0 +1,197 @@
+<script>
+
+let dashboardData = {};
+let memberData = [];
+
+/* ===========================
+   LOADING
+=========================== */
+
+function showLoading() {
+
+    document.getElementById("loadingOverlay").style.display = "flex";
+
+}
+
+function hideLoading() {
+
+    document.getElementById("loadingOverlay").style.display = "none";
+
+}
+
+/* ===========================
+   TOAST
+=========================== */
+
+function showToast(message) {
+
+    document.getElementById("toastMessage").innerHTML = message;
+
+    const toast = new bootstrap.Toast(
+        document.getElementById("appToast")
+    );
+
+    toast.show();
+
+}
+
+/* ===========================
+   MENU
+=========================== */
+
+function openPage(page){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(p => p.style.display = "none");
+
+    document
+        .getElementById(page)
+        .style.display = "block";
+
+    document
+        .querySelectorAll(".menu a")
+        .forEach(a => a.classList.remove("active"));
+
+    document
+        .querySelector(`[data-page="${page}"]`)
+        .classList.add("active");
+
+}
+
+/* ===========================
+   DASHBOARD
+=========================== */
+
+function loadDashboard(){
+
+    showLoading();
+
+    google.script.run
+
+    .withSuccessHandler(function(data){
+
+        dashboardData = data;
+
+        document.getElementById("totalMember").innerHTML = data.totalMember;
+
+        document.getElementById("totalVehicle").innerHTML = data.totalVehicle;
+
+        document.getElementById("silverMember").innerHTML = data.silver;
+
+        document.getElementById("goldMember").innerHTML = data.gold;
+
+        document.getElementById("platinumMember").innerHTML = data.platinum;
+
+        document.getElementById("rewardReady").innerHTML = data.rewardReady;
+
+        document.getElementById("visitToday").innerHTML = data.visitToday;
+
+        document.getElementById("visitMonth").innerHTML = data.visitMonth;
+
+        document.getElementById("newMemberMonth").innerHTML = data.newMemberMonth;
+
+        hideLoading();
+
+    })
+
+    .getDashboard();
+
+}
+
+/* ===========================
+   MEMBERS
+=========================== */
+
+function loadMembers(){
+
+    showLoading();
+
+    google.script.run
+
+    .withSuccessHandler(function(data){
+
+        memberData = data;
+
+        renderMembers(data);
+
+        hideLoading();
+
+    })
+
+    .getMembers();
+
+}
+
+function renderMembers(data){
+
+    let html = "";
+
+    if(data.length===0){
+
+        html=`
+            <div class="text-center p-5">
+
+                Belum ada member.
+
+            </div>
+        `;
+
+    }else{
+
+        data.forEach(member=>{
+
+            html += `
+
+            <tr>
+
+                <td>${member[0]}</td>
+
+                <td>${member[1]}</td>
+
+                <td>${member[2]}</td>
+
+                <td>${member[3]}</td>
+
+                <td>${member[4]}</td>
+
+                <td>${member[7]}</td>
+
+                <td>
+
+                    <button
+                        class="btn btn-success btn-sm">
+
+                        Visit
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        });
+
+    }
+
+    document.getElementById("memberTableBody").innerHTML = html;
+
+}
+
+/* ===========================
+   INIT
+=========================== */
+
+document.addEventListener("DOMContentLoaded",function(){
+
+    openPage("dashboardPage");
+
+    loadDashboard();
+
+    loadMembers();
+
+});
+
+</script>
