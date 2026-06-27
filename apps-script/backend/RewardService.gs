@@ -32,7 +32,7 @@ function checkReward(memberId) {
 
   if (totalVisit === 0) return false;
 
-  if (totalVisit % rewardTarget() !== 0) return false;
+  if (totalVisit % CONFIG.REWARD_TARGET !== 0) return false;
 
   const sheet = getSheet(CONFIG.SHEET_REWARDS);
 
@@ -69,25 +69,40 @@ function checkReward(memberId) {
 /**
  * Klaim Reward
  */
-function claimReward(rewardId) {
+function claimReward(rewardId){
 
   const sheet = getSheet(CONFIG.SHEET_REWARDS);
 
-  const data = sheet.getDataRange().getValues();
+  const values = sheet.getDataRange().getValues();
 
-  for (let i = 1; i < data.length; i++) {
+  for(let i = 1; i < values.length; i++){
 
-    if (data[i][0] === rewardId) {
+    if(values[i][0] === rewardId){
 
-      sheet
-        .getRange(i + 1, 4)
-        .setValue("Claimed");
+      if(values[i][3] === "Claimed"){
 
-      logReward(data[i][1]);
+        return {
+
+          success:false,
+
+          message:"Reward sudah pernah diklaim."
+
+        };
+
+      }
+
+      sheet.getRange(i + 1, 4).setValue("Claimed");
+
+      sheet.getRange(i + 1, 5).setValue(now());
+
+      logClaimReward(rewardId);
 
       return {
-        success: true,
-        message: "Reward berhasil diklaim."
+
+        success:true,
+
+        message:"Reward berhasil diklaim."
+
       };
 
     }
@@ -95,8 +110,11 @@ function claimReward(rewardId) {
   }
 
   return {
-    success: false,
-    message: "Reward tidak ditemukan."
+
+    success:false,
+
+    message:"Reward tidak ditemukan."
+
   };
 
 }
@@ -110,11 +128,11 @@ function updateMemberLevel(memberId) {
 
   let level = CONFIG.LEVEL_SILVER;
 
-  if (totalVisit >= platinumTarget()) {
+  if (totalVisit >= CONFIG.PLATINUM_TARGET) {
 
     level = CONFIG.LEVEL_PLATINUM;
 
-  } else if (totalVisit >= goldTarget()) {
+  } else if (totalVisit >= CONFIG.GOLD_TARGET) {
 
     level = CONFIG.LEVEL_GOLD;
 
