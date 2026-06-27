@@ -247,11 +247,7 @@ function loadDashboard(){
 
     })
 
-    .withFailureHandler(function(error){
-
-        hideLoading();
-
-        showToast(error.message);
+    .withFailureHandler(serverError)
 
     })
 
@@ -789,11 +785,7 @@ function loadVisits(){
 
     })
 
-    .withFailureHandler(function(err){
-
-        hideLoading();
-
-        showToast(err.message);
+    .withFailureHandler(serverError)
 
     })
 
@@ -917,11 +909,7 @@ function saveVisit(){
 
     })
 
-    .withFailureHandler(function(err){
-
-        hideLoading();
-
-        showToast(err.message);
+    .withFailureHandler(serverError)
 
     })
 
@@ -1021,11 +1009,7 @@ function loadRewards(){
 
     })
 
-    .withFailureHandler(function(err){
-
-        hideLoading();
-
-        showToast(err.message);
+    .withFailureHandler(serverError)
 
     })
 
