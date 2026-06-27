@@ -1,141 +1,195 @@
-<div id="dashboardPage" class="page">
+<section id="dashboardPage" class="page">
 
-    <div class="sidebar">
+    <div class="topbar">
 
-        <div class="logo">
+        <div>
 
-            Neighbor Place
+            <h2>Dashboard</h2>
 
-            <small>Customer Loyalty CRM</small>
+            <small>Neighbor Place CRM</small>
 
         </div>
 
-        <div class="menu">
+        <div class="d-flex align-items-center gap-3">
 
-            <a href="javascript:void(0)"
-               class="active"
-               data-page="dashboardPage"
-               onclick="openPage('dashboardPage')">
+            <span class="status">
 
-                <i class="bi bi-grid"></i>
+                🟢 Online
 
-                Dashboard
-
-            </a>
-
-            <a href="javascript:void(0)"
-               data-page="membersPage"
-               onclick="openPage('membersPage')">
-
-                <i class="bi bi-people"></i>
-
-                Members
-
-            </a>
-
-            <a href="javascript:void(0)"
-               data-page="visitsPage"
-               onclick="openPage('visitsPage')">
-
-                <i class="bi bi-car-front"></i>
-
-                Visits
-
-            </a>
-
-            <a href="javascript:void(0)"
-               data-page="rewardsPage"
-               onclick="openPage('rewardsPage')">
-
-                <i class="bi bi-gift"></i>
-
-                Rewards
-
-            </a>
-
-            <a href="javascript:void(0)"
-               data-page="settingsPage"
-               onclick="openPage('settingsPage')">
-
-                <i class="bi bi-gear"></i>
-
-                Settings
-
-            </a>
+            </span>
 
         </div>
 
     </div>
 
-    <div class="content">
+    <div class="cards">
 
-        <div class="topbar">
+        <div class="card-box">
 
-            <div>
+            <h6>Total Member</h6>
 
-                <h2>Dashboard</h2>
+            <h2 id="totalMember">0</h2>
 
-                <small>Neighbor Place CRM</small>
+        </div>
 
-            </div>
+        <div class="card-box">
 
-            <div class="status">
+            <h6>Total Kendaraan</h6>
 
-                🟢 System Online
+            <h2 id="totalVehicle">0</h2>
+
+        </div>
+
+        <div class="card-box">
+
+            <h6>Silver Member</h6>
+
+            <h2 id="silverMember">0</h2>
+
+        </div>
+
+        <div class="card-box">
+
+            <h6>Gold Member</h6>
+
+            <h2 id="goldMember">0</h2>
+
+        </div>
+
+        <div class="card-box">
+
+            <h6>Platinum Member</h6>
+
+            <h2 id="platinumMember">0</h2>
+
+        </div>
+
+        <div class="card-box">
+
+            <h6>Reward Ready</h6>
+
+            <h2 id="rewardReady">0</h2>
+
+        </div>
+
+        <div class="card-box">
+
+            <h6>Visit Hari Ini</h6>
+
+            <h2 id="visitToday">0</h2>
+
+        </div>
+
+        <div class="card-box">
+
+            <h6>Visit Bulan Ini</h6>
+
+            <h2 id="visitMonth">0</h2>
+
+        </div>
+
+        <div class="card-box">
+
+            <h6>Member Baru Bulan Ini</h6>
+
+            <h2 id="newMemberMonth">0</h2>
+
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+
+        <div class="col-lg-8">
+
+            <div class="table-card">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h5 class="mb-0">
+
+                        Aktivitas Terbaru
+
+                    </h5>
+
+                </div>
+
+                <div id="dashboardLogs">
+
+                    Belum ada aktivitas.
+
+                </div>
 
             </div>
 
         </div>
 
-        <div class="cards">
+        <div class="col-lg-4">
 
-            <div class="card-box">
-                <h6>Total Member</h6>
-                <h2 id="totalMember">0</h2>
-            </div>
+            <div class="table-card">
 
-            <div class="card-box">
-                <h6>Total Kendaraan</h6>
-                <h2 id="totalVehicle">0</h2>
-            </div>
+                <h5 class="mb-3">
 
-            <div class="card-box">
-                <h6>Silver</h6>
-                <h2 id="silverMember">0</h2>
-            </div>
+                    Informasi
 
-            <div class="card-box">
-                <h6>Gold</h6>
-                <h2 id="goldMember">0</h2>
-            </div>
+                </h5>
 
-            <div class="card-box">
-                <h6>Platinum</h6>
-                <h2 id="platinumMember">0</h2>
-            </div>
+                <table class="table table-borderless mb-0">
 
-            <div class="card-box">
-                <h6>Reward Ready</h6>
-                <h2 id="rewardReady">0</h2>
-            </div>
+                    <tr>
 
-            <div class="card-box">
-                <h6>Visit Hari Ini</h6>
-                <h2 id="visitToday">0</h2>
-            </div>
+                        <td>Business</td>
 
-            <div class="card-box">
-                <h6>Visit Bulan Ini</h6>
-                <h2 id="visitMonth">0</h2>
-            </div>
+                        <td id="businessName">
 
-            <div class="card-box">
-                <h6>Member Baru Bulan Ini</h6>
-                <h2 id="newMemberMonth">0</h2>
+                            Neighbor Place
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Reward</td>
+
+                        <td id="rewardTarget">
+
+                            8 Visit
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Gold</td>
+
+                        <td id="goldTarget">
+
+                            20 Visit
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Platinum</td>
+
+                        <td id="platinumTarget">
+
+                            40 Visit
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
             </div>
 
         </div>
 
     </div>
 
-</div>
+</section>
