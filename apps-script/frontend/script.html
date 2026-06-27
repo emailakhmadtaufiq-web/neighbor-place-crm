@@ -11,6 +11,7 @@ let members = [];
 let visits = [];
 let rewards = [];
 let settings = {};
+let editingMemberId = "";
 
 let memberModal = null;
 let visitModal = null;
@@ -281,6 +282,8 @@ function getValue(id){
 
 function clearMemberForm(){
 
+    editingMemberId="";
+
     const ids=[
 
         "memberName",
@@ -304,6 +307,16 @@ function clearMemberForm(){
         }
 
     });
+
+    const title=document.getElementById("memberModalTitle");
+
+    if(title){
+
+        title.innerHTML="Tambah Member";
+
+    }
+
+}
 /* =====================================================
    MEMBER MODULE
 ===================================================== */
@@ -470,42 +483,67 @@ function saveMember(){
 
     showLoading();
 
-    google.script.run
+    if(editingMemberId===""){
 
-    .withSuccessHandler(function(result){
+        google.script.run
 
-        hideLoading();
+        .withSuccessHandler(afterSaveMember)
 
-        if(result.success){
+        .withFailureHandler(serverError)
 
-            closeMemberModal();
+        .createMember(data);
 
-            showToast(result.message);
+    }else{
 
-            loadMembers();
+        google.script.run
 
-            loadDashboard();
+        .withSuccessHandler(afterSaveMember)
 
-        }else{
+        .withFailureHandler(serverError)
 
-            showToast(result.message);
+        .updateMember(
 
-        }
+            editingMemberId,
 
-    })
+            data
 
-    .withFailureHandler(function(err){
+        );
 
-        hideLoading();
-
-        showToast(err.message);
-
-    })
-
-    .createMember(data);
+    }
 
 }
+function afterSaveMember(result){
 
+    hideLoading();
+
+    if(!result.success){
+
+        showToast(result.message);
+
+        return;
+
+    }
+
+    editingMemberId="";
+
+    clearMemberForm();
+
+    closeMemberModal();
+
+    loadMembers();
+
+    loadDashboard();
+
+    showToast(result.message);
+
+}
+function serverError(err){
+
+    hideLoading();
+
+    showToast(err.message);
+
+}
 /* =====================================
    SEARCH MEMBER
 ===================================== */
@@ -552,13 +590,7 @@ function searchMemberRealtime(){
 
 function editMember(memberId){
 
-    const member=
-
-    members.find(
-
-        x=>x[0]===memberId
-
-    );
+    const member = members.find(m => m[0] === memberId);
 
     if(!member){
 
@@ -568,13 +600,17 @@ function editMember(memberId){
 
     }
 
-    document.getElementById("memberName").value=member[1];
+    editingMemberId = memberId;
 
-    document.getElementById("memberPhone").value=member[2];
+    document.getElementById("memberName").value = member[1];
 
-    document.getElementById("memberPlate").value=member[3];
+    document.getElementById("memberPhone").value = member[2];
 
-    document.getElementById("memberVehicle").value=member[4];
+    document.getElementById("memberPlate").value = member[3];
+
+    document.getElementById("memberVehicle").value = member[4];
+
+    document.getElementById("memberModalTitle").innerHTML="Edit Member";
 
     memberModal.show();
 
