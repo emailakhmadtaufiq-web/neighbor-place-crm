@@ -222,13 +222,25 @@ function loadDashboard(){
 
 function openMemberModal(){
 
+    editingMemberId = null;
+
     clearMemberForm();
+
+    const title = document.getElementById("memberModalTitle");
+
+    if(title){
+
+        title.innerHTML = "Tambah Member";
+
+    }
 
     memberModal.show();
 
 }
 
 function closeMemberModal(){
+
+    clearMemberForm();
 
     memberModal.hide();
 
@@ -282,9 +294,7 @@ function getValue(id){
 
 function clearMemberForm(){
 
-    editingMemberId="";
-
-    const ids=[
+    const fields = [
 
         "memberName",
 
@@ -296,23 +306,25 @@ function clearMemberForm(){
 
     ];
 
-    ids.forEach(id=>{
+    fields.forEach(function(id){
 
-        const el=document.getElementById(id);
+        const el = document.getElementById(id);
 
         if(el){
 
-            el.value="";
+            el.value = "";
 
         }
 
     });
 
-    const title=document.getElementById("memberModalTitle");
+    editingMemberId = null;
+
+    const title = document.getElementById("memberModalTitle");
 
     if(title){
 
-        title.innerHTML="Tambah Member";
+        title.innerHTML = "Tambah Member";
 
     }
 
@@ -321,45 +333,48 @@ function clearMemberForm(){
    MEMBER MODULE
 ===================================================== */
 
+let editingMemberId = null;
+
+/**
+ * LOAD MEMBER
+ */
 function loadMembers(){
 
     showLoading();
 
     google.script.run
 
-    .withSuccessHandler(function(data){
-
-        members = data || [];
-
-        renderMembers(members);
+    .withSuccessHandler(function(result){
 
         hideLoading();
 
-    })
+        members = result || [];
 
-    .withFailureHandler(function(err){
-
-        hideLoading();
-
-        showToast(err.message);
+        renderMembers();
 
     })
+
+    .withFailureHandler(serverError)
 
     .getMembers();
 
 }
 
-function renderMembers(data){
+/**
+ * RENDER MEMBER
+ */
 
-    const tbody=document.getElementById("memberTableBody");
+function renderMembers(list = members){
+
+    const tbody = document.getElementById("memberTableBody");
 
     if(!tbody) return;
 
-    tbody.innerHTML="";
+    tbody.innerHTML = "";
 
-    if(data.length===0){
+    if(list.length === 0){
 
-        tbody.innerHTML=`
+        tbody.innerHTML = `
 
         <tr>
 
@@ -377,74 +392,108 @@ function renderMembers(data){
 
     }
 
-    data.forEach(member=>{
+    list.forEach(member=>{
 
-        tbody.innerHTML += `
-
-        <tr>
-
-            <td>${member[0]}</td>
-
-            <td>${member[1]}</td>
-
-            <td>${member[2]}</td>
-
-            <td>${member[3]}</td>
-
-            <td>${member[4]}</td>
-
-            <td>
-
-                <span class="badge bg-success">
-
-                    ${member[7]}
-
-                </span>
-
-            </td>
-
-            <td>
-
-                ${member[6]}
-
-            </td>
-
-            <td>
-
-                <div class="btn-group">
-
-                    <button
-
-                        class="btn btn-success btn-sm"
-
-                        onclick="quickVisit('${member[0]}')">
-
-                        Visit
-
-                    </button>
-
-                    <button
-
-                        class="btn btn-outline-secondary btn-sm"
-
-                        onclick="editMember('${member[0]}')">
-
-                        Edit
-
-                    </button>
-
-                </div>
-
-            </td>
-
-        </tr>
-
-        `;
+        tbody.innerHTML += createMemberRow(member);
 
     });
 
 }
 
+/**
+ * TEMPLATE ROW
+ */
+
+function createMemberRow(member){
+
+    const level = member[7] || "Silver";
+    const status = member[6] || "Active";
+
+    let levelBadge = "bg-secondary";
+
+    if(level==="Silver") levelBadge="bg-secondary";
+    if(level==="Gold") levelBadge="bg-warning text-dark";
+    if(level==="Platinum") levelBadge="bg-primary";
+
+    let statusBadge = "bg-success";
+
+    if(status==="Inactive"){
+
+        statusBadge="bg-danger";
+
+    }
+
+    return `
+
+    <tr>
+
+        <td>${member[0]}</td>
+
+        <td>${member[1]}</td>
+
+        <td>${member[2]}</td>
+
+        <td>${member[3]}</td>
+
+        <td>${member[4]}</td>
+
+        <td>
+
+            <span class="badge ${levelBadge}">
+
+                ${level}
+
+            </span>
+
+        </td>
+
+        <td>
+
+            <span class="badge ${statusBadge}">
+
+                ${status}
+
+            </span>
+
+        </td>
+
+        <td>
+
+            <div class="btn-group">
+
+                <button
+                class="btn btn-success btn-sm"
+                onclick="quickVisit('${member[0]}')">
+
+                Visit
+
+                </button>
+
+                <button
+                class="btn btn-warning btn-sm"
+                onclick="editMember('${member[0]}')">
+
+                Edit
+
+                </button>
+
+                <button
+                class="btn btn-danger btn-sm"
+                onclick="removeMember('${member[0]}')">
+
+                Inactive
+
+                </button>
+
+            </div>
+
+        </td>
+
+    </tr>
+
+    `;
+
+}
 /* =====================================
    CREATE MEMBER
 ===================================== */
@@ -463,55 +512,45 @@ function saveMember(){
 
     };
 
-    if(
+if(editingMemberId){
 
-        !data.name ||
+    google.script.run
 
-        !data.phone ||
+    .withSuccessHandler(function(result){
 
-        !data.plate ||
+        hideLoading();
 
-        !data.vehicle
+        if(!result.success){
 
-    ){
+            showToast(result.message);
 
-        showToast("Lengkapi semua data.");
+            return;
 
-        return;
+        }
 
-    }
+        closeMemberModal();
 
-    showLoading();
+        loadMembers();
 
-    if(editingMemberId===""){
+        loadDashboard();
 
-        google.script.run
+        showToast(result.message);
 
-        .withSuccessHandler(afterSaveMember)
+    })
 
-        .withFailureHandler(serverError)
+    .withFailureHandler(serverError)
 
-        .createMember(data);
+    .updateMember(
 
-    }else{
+        editingMemberId,
 
-        google.script.run
+        data
 
-        .withSuccessHandler(afterSaveMember)
+    );
 
-        .withFailureHandler(serverError)
+    return;
 
-        .updateMember(
-
-            editingMemberId,
-
-            data
-
-        );
-
-    }
-
-}
+}    
 function afterSaveMember(result){
 
     hideLoading();
@@ -537,6 +576,35 @@ function afterSaveMember(result){
     showToast(result.message);
 
 }
+function removeMember(memberId){
+
+    if(!confirm("Nonaktifkan member ini?")){
+
+        return;
+
+    }
+
+    showLoading();
+
+    google.script.run
+
+    .withSuccessHandler(function(result){
+
+        hideLoading();
+
+        showToast(result.message);
+
+        loadMembers();
+
+        loadDashboard();
+
+    })
+
+    .withFailureHandler(serverError)
+
+    .deactivateMember(memberId);
+
+}
 function serverError(err){
 
     hideLoading();
@@ -550,37 +618,41 @@ function serverError(err){
 
 function searchMemberRealtime(){
 
-    const keyword=
+    const keyword = getValue("searchMember").toLowerCase();
 
-    getValue("searchMember")
+    const level = document.getElementById("filterLevel").value;
 
-    .toLowerCase();
+    const status = document.getElementById("filterStatus").value;
 
-    if(keyword===""){
+    const result = members.filter(function(member){
 
-        renderMembers(members);
+        const search =
 
-        return;
+            String(member[0]).toLowerCase().includes(keyword) ||
 
-    }
+            String(member[1]).toLowerCase().includes(keyword) ||
 
-    const filtered=members.filter(member=>{
+            String(member[2]).toLowerCase().includes(keyword) ||
 
-        return(
+            String(member[3]).toLowerCase().includes(keyword);
 
-            String(member[1]).toLowerCase().includes(keyword)||
+        const levelOK =
 
-            String(member[2]).toLowerCase().includes(keyword)||
+            level==="" ||
 
-            String(member[3]).toLowerCase().includes(keyword)||
+            member[7]===level;
 
-            String(member[0]).toLowerCase().includes(keyword)
+        const statusOK =
 
-        );
+            status==="" ||
+
+            member[6]===status;
+
+        return search && levelOK && statusOK;
 
     });
 
-    renderMembers(filtered);
+    renderMembers(result);
 
 }
 
@@ -590,7 +662,11 @@ function searchMemberRealtime(){
 
 function editMember(memberId){
 
-    const member = members.find(m => m[0] === memberId);
+    const member = members.find(function(item){
+
+        return item[0] === memberId;
+
+    });
 
     if(!member){
 
@@ -610,7 +686,13 @@ function editMember(memberId){
 
     document.getElementById("memberVehicle").value = member[4];
 
-    document.getElementById("memberModalTitle").innerHTML="Edit Member";
+    const title = document.getElementById("memberModalTitle");
+
+    if(title){
+
+        title.innerHTML = "Edit Member";
+
+    }
 
     memberModal.show();
 
@@ -1381,7 +1463,51 @@ setInterval(function(){
 /* =====================================================
    START
 ===================================================== */
+document.addEventListener("DOMContentLoaded",function(){
 
+    const search=document.getElementById("searchMember");
+
+    if(search){
+
+        search.addEventListener(
+
+            "keyup",
+
+            searchMemberRealtime
+
+        );
+
+    }
+
+    const level=document.getElementById("filterLevel");
+
+    if(level){
+
+        level.addEventListener(
+
+            "change",
+
+            searchMemberRealtime
+
+        );
+
+    }
+
+    const status=document.getElementById("filterStatus");
+
+    if(status){
+
+        status.addEventListener(
+
+            "change",
+
+            searchMemberRealtime
+
+        );
+
+    }
+
+});
 console.log(
 
     "Neighbor Place CRM v1.0 Loaded"
