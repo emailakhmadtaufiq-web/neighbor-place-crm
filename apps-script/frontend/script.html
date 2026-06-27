@@ -35,6 +35,49 @@ document.addEventListener("DOMContentLoaded", () => {
     openPage("dashboardPage");
 
     initialize();
+    const search=document.getElementById("searchMember");
+
+    if(search){
+
+        search.addEventListener(
+
+            "keyup",
+
+            searchMemberRealtime
+
+        );
+
+    }
+
+    const level=document.getElementById("filterLevel");
+
+    if(level){
+
+        level.addEventListener(
+
+            "change",
+
+            searchMemberRealtime
+
+        );
+
+    }
+
+    const status=document.getElementById("filterStatus");
+
+    if(status){
+
+        status.addEventListener(
+
+            "change",
+
+            searchMemberRealtime
+
+        );
+
+    }
+
+
 
 });
 
@@ -246,15 +289,6 @@ function closeMemberModal(){
 
 }
 
-function openVisitModal(){
-
-    if(visitModal){
-
-        visitModal.show();
-
-    }
-
-}
 
 function closeVisitModal(){
 
@@ -332,8 +366,6 @@ function clearMemberForm(){
 /* =====================================================
    MEMBER MODULE
 ===================================================== */
-
-let editingMemberId = null;
 
 /**
  * LOAD MEMBER
@@ -497,60 +529,59 @@ function createMemberRow(member){
 /* =====================================
    CREATE MEMBER
 ===================================== */
-
 function saveMember(){
 
-    const data={
+    const data = {
 
-        name:getValue("memberName"),
-
-        phone:getValue("memberPhone"),
-
-        plate:getValue("memberPlate"),
-
-        vehicle:getValue("memberVehicle")
+        name: getValue("memberName"),
+        phone: getValue("memberPhone"),
+        plate: getValue("memberPlate"),
+        vehicle: getValue("memberVehicle")
 
     };
 
-if(editingMemberId){
+    if(
+        !data.name ||
+        !data.phone ||
+        !data.plate ||
+        !data.vehicle
+    ){
+
+        showToast("Lengkapi seluruh data.");
+
+        return;
+
+    }
+
+    showLoading();
+
+    if(editingMemberId){
+
+        google.script.run
+
+        .withSuccessHandler(afterSaveMember)
+
+        .withFailureHandler(serverError)
+
+        .updateMember(
+            editingMemberId,
+            data
+        );
+
+        return;
+
+    }
 
     google.script.run
 
-    .withSuccessHandler(function(result){
-
-        hideLoading();
-
-        if(!result.success){
-
-            showToast(result.message);
-
-            return;
-
-        }
-
-        closeMemberModal();
-
-        loadMembers();
-
-        loadDashboard();
-
-        showToast(result.message);
-
-    })
+    .withSuccessHandler(afterSaveMember)
 
     .withFailureHandler(serverError)
 
-    .updateMember(
+    .createMember(data);
 
-        editingMemberId,
+}
 
-        data
-
-    );
-
-    return;
-
-}    
 function afterSaveMember(result){
 
     hideLoading();
@@ -563,7 +594,7 @@ function afterSaveMember(result){
 
     }
 
-    editingMemberId="";
+    editingMemberId = null;
 
     clearMemberForm();
 
@@ -974,37 +1005,7 @@ function filterVisitDate(){
    AUTO EVENT
 ========================================== */
 
-document.addEventListener("DOMContentLoaded",()=>{
 
-    const visitSearch=document.getElementById("searchVisit");
-
-    if(visitSearch){
-
-        visitSearch.addEventListener(
-
-            "keyup",
-
-            searchVisitRealtime
-
-        );
-
-    }
-
-    const visitDate=document.getElementById("visitDate");
-
-    if(visitDate){
-
-        visitDate.addEventListener(
-
-            "change",
-
-            filterVisitDate
-
-        );
-
-    }
-
-});
 
 /* =====================================================
    REWARD MODULE
@@ -1465,49 +1466,7 @@ setInterval(function(){
 ===================================================== */
 document.addEventListener("DOMContentLoaded",function(){
 
-    const search=document.getElementById("searchMember");
-
-    if(search){
-
-        search.addEventListener(
-
-            "keyup",
-
-            searchMemberRealtime
-
-        );
-
-    }
-
-    const level=document.getElementById("filterLevel");
-
-    if(level){
-
-        level.addEventListener(
-
-            "change",
-
-            searchMemberRealtime
-
-        );
-
-    }
-
-    const status=document.getElementById("filterStatus");
-
-    if(status){
-
-        status.addEventListener(
-
-            "change",
-
-            searchMemberRealtime
-
-        );
-
-    }
-
-});
+ 
 console.log(
 
     "Neighbor Place CRM v1.0 Loaded"
