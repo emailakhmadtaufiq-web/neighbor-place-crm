@@ -1,108 +1,118 @@
 <script>
 
-/* =====================================================
-   Neighbor Place CRM
-   Frontend Script
-   Production v1.0
-===================================================== */
+/* ==========================================================
+    Neighbor Place CRM
+    Frontend Script v2
+    PART (1)
+========================================================== */
+
+/* ==========================================================
+GLOBAL STATE
+========================================================== */
 
 let dashboardData = {};
+
 let members = [];
+
 let visits = [];
+
 let rewards = [];
+
 let settings = {};
-let editingMemberId = "";
+
+let editingMemberId = null;
 
 let memberModal = null;
+
 let visitModal = null;
 
-/* =====================================================
-   INIT
-===================================================== */
+let globalModal = null;
 
-document.addEventListener("DOMContentLoaded", () => {
+/* ==========================================================
+INITIALIZE
+========================================================== */
 
-    memberModal = new bootstrap.Modal(
-        document.getElementById("memberModal")
-    );
+document.addEventListener("DOMContentLoaded",function(){
 
-    const visitModalElement = document.getElementById("visitModal");
-
-    if (visitModalElement) {
-        visitModal = new bootstrap.Modal(visitModalElement);
-    }
-
-    openPage("dashboardPage");
-
-    initialize();
-    const search=document.getElementById("searchMember");
-
-    if(search){
-
-        search.addEventListener(
-
-            "keyup",
-
-            searchMemberRealtime
-
-        );
-
-    }
-
-    const level=document.getElementById("filterLevel");
-
-    if(level){
-
-        level.addEventListener(
-
-            "change",
-
-            searchMemberRealtime
-
-        );
-
-    }
-
-    const status=document.getElementById("filterStatus");
-
-    if(status){
-
-        status.addEventListener(
-
-            "change",
-
-            searchMemberRealtime
-
-        );
-
-    }
-
-
+    initializeApplication();
 
 });
 
-/* =====================================================
-   INITIALIZE
-===================================================== */
+/* ==========================================================
+APPLICATION
+========================================================== */
 
-function initialize(){
+function initializeApplication(){
 
-    loadDashboard();
+    initializeModal();
 
-    loadMembers();
+    initializeEvents();
+
+    openPage("dashboardPage");
+
+    refreshAll();
 
 }
 
-/* =====================================================
-   PAGE
-===================================================== */
+/* ==========================================================
+MODAL
+========================================================== */
+
+function initializeModal(){
+
+    const member=document.getElementById("memberModal");
+
+    if(member){
+
+        memberModal=new bootstrap.Modal(member);
+
+    }
+
+    const visit=document.getElementById("visitModal");
+
+    if(visit){
+
+        visitModal=new bootstrap.Modal(visit);
+
+    }
+
+    const global=document.getElementById("globalModal");
+
+    if(global){
+
+        globalModal=new bootstrap.Modal(global);
+
+    }
+
+}
+
+/* ==========================================================
+EVENT
+========================================================== */
+
+function initializeEvents(){
+
+    bindMemberSearch();
+
+    bindVisitSearch();
+
+    bindRewardSearch();
+
+}
+
+/* ==========================================================
+PAGE
+========================================================== */
 
 function openPage(page){
 
-    document.querySelectorAll(".page")
-    .forEach(p=>{
+    document
 
-        p.style.display="none";
+    .querySelectorAll(".page")
+
+    .forEach(function(item){
+
+        item.style.display="none";
 
     });
 
@@ -114,20 +124,29 @@ function openPage(page){
 
     }
 
-    document.querySelectorAll(".menu a")
-    .forEach(item=>{
+    document
 
-        item.classList.remove("active");
+    .querySelectorAll(".sidebar .menu-item")
+
+    .forEach(function(menu){
+
+        menu.classList.remove("active");
 
     });
 
-    const menu=document.querySelector(`[data-page="${page}"]`);
+    const active=document.querySelector(
 
-    if(menu){
+        '.sidebar .menu-item[data-page="'+page+'"]'
 
-        menu.classList.add("active");
+    );
+
+    if(active){
+
+        active.classList.add("active");
 
     }
+
+    updateTitle(page);
 
     switch(page){
 
@@ -145,31 +164,19 @@ function openPage(page){
 
         case "visitsPage":
 
-            if(typeof loadVisits==="function"){
-
-                loadVisits();
-
-            }
+            loadVisits();
 
             break;
 
         case "rewardsPage":
 
-            if(typeof loadRewards==="function"){
-
-                loadRewards();
-
-            }
+            loadRewards();
 
             break;
 
         case "settingsPage":
 
-            if(typeof loadSettings==="function"){
-
-                loadSettings();
-
-            }
+            loadSettings();
 
             break;
 
@@ -177,29 +184,121 @@ function openPage(page){
 
 }
 
-/* =====================================================
-   LOADING
-===================================================== */
+/* ==========================================================
+TITLE
+========================================================== */
+
+function updateTitle(page){
+
+    const title=document.getElementById("pageTitle");
+
+    const desc=document.getElementById("pageDescription");
+
+    if(!title || !desc){
+
+        return;
+
+    }
+
+    switch(page){
+
+        case "dashboardPage":
+
+            title.innerHTML="Dashboard";
+
+            desc.innerHTML="Customer Loyalty Overview";
+
+            break;
+
+        case "membersPage":
+
+            title.innerHTML="Members";
+
+            desc.innerHTML="Kelola seluruh member";
+
+            break;
+
+        case "visitsPage":
+
+            title.innerHTML="Visits";
+
+            desc.innerHTML="Riwayat kunjungan pelanggan";
+
+            break;
+
+        case "rewardsPage":
+
+            title.innerHTML="Rewards";
+
+            desc.innerHTML="Reward Management";
+
+            break;
+
+        case "settingsPage":
+
+            title.innerHTML="Settings";
+
+            desc.innerHTML="Konfigurasi aplikasi";
+
+            break;
+
+    }
+
+}
+
+/* ==========================================================
+LOADING
+========================================================== */
 
 function showLoading(){
 
-    document.getElementById("loadingOverlay").style.display="flex";
+    const overlay=document.getElementById(
+
+        "loadingOverlay"
+
+    );
+
+    if(overlay){
+
+        overlay.style.display="flex";
+
+    }
 
 }
 
 function hideLoading(){
 
-    document.getElementById("loadingOverlay").style.display="none";
+    const overlay=document.getElementById(
+
+        "loadingOverlay"
+
+    );
+
+    if(overlay){
+
+        overlay.style.display="none";
+
+    }
 
 }
 
-/* =====================================================
-   TOAST
-===================================================== */
+/* ==========================================================
+TOAST
+========================================================== */
 
 function showToast(message){
 
-    document.getElementById("toastMessage").innerHTML=message;
+    const body=document.getElementById(
+
+        "toastMessage"
+
+    );
+
+    if(body){
+
+        body.innerHTML=message;
+
+    }
 
     const toast=new bootstrap.Toast(
 
@@ -211,9 +310,138 @@ function showToast(message){
 
 }
 
-/* =====================================================
-   DASHBOARD
-===================================================== */
+/* ==========================================================
+SERVER ERROR
+========================================================== */
+
+function serverError(error){
+
+    hideLoading();
+
+    if(error){
+
+        showToast(
+
+            error.message ||
+
+            "Terjadi kesalahan."
+
+        );
+
+        return;
+
+    }
+
+    showToast(
+
+        "Server Error."
+
+    );
+
+}
+
+/* ==========================================================
+HELPER
+========================================================== */
+
+function getValue(id){
+
+    const el=document.getElementById(id);
+
+    if(!el){
+
+        return "";
+
+    }
+
+    return el.value.trim();
+
+}
+
+function setInput(id,value){
+
+    const el=document.getElementById(id);
+
+    if(el){
+
+        el.value=value ?? "";
+
+    }
+
+}
+
+function setHTML(id,value){
+
+    const el=document.getElementById(id);
+
+    if(el){
+
+        el.innerHTML=value ?? "";
+
+    }
+
+}
+
+function capitalize(text){
+
+    if(!text){
+
+        return "";
+
+    }
+
+    return text
+
+        .toLowerCase()
+
+        .replace(/\b\w/g,function(x){
+
+            return x.toUpperCase();
+
+        });
+
+}
+
+function currency(number){
+
+    return new Intl.NumberFormat(
+
+        "id-ID"
+
+    ).format(number);
+
+}
+
+function formatDate(date){
+
+    try{
+
+        return new Date(date)
+
+        .toLocaleString("id-ID");
+
+    }catch(e){
+
+        return date;
+
+    }
+
+}
+
+/* ==========================================================
+REFRESH
+========================================================== */
+
+function refreshAll(){
+
+    loadDashboard();
+
+    loadMembers();
+
+}
+/* ==========================================================
+DASHBOARD
+========================================================== */
 
 function loadDashboard(){
 
@@ -221,27 +449,11 @@ function loadDashboard(){
 
     google.script.run
 
-    .withSuccessHandler(function(data){
+    .withSuccessHandler(function(result){
 
-        dashboardData=data;
+        dashboardData=result || {};
 
-        setValue("totalMember",data.totalMember);
-
-        setValue("totalVehicle",data.totalVehicle);
-
-        setValue("silverMember",data.silver);
-
-        setValue("goldMember",data.gold);
-
-        setValue("platinumMember",data.platinum);
-
-        setValue("rewardReady",data.rewardReady);
-
-        setValue("visitToday",data.visitToday);
-
-        setValue("visitMonth",data.visitMonth);
-
-        setValue("newMemberMonth",data.newMemberMonth);
+        renderDashboard();
 
         hideLoading();
 
@@ -253,21 +465,410 @@ function loadDashboard(){
 
 }
 
-/* =====================================================
-   MODAL
-===================================================== */
+function renderDashboard(){
+
+    setHTML(
+
+        "totalMember",
+
+        dashboardData.totalMember || 0
+
+    );
+
+    setHTML(
+
+        "totalVehicle",
+
+        dashboardData.totalVehicle || 0
+
+    );
+
+    setHTML(
+
+        "silverMember",
+
+        dashboardData.silver || 0
+
+    );
+
+    setHTML(
+
+        "goldMember",
+
+        dashboardData.gold || 0
+
+    );
+
+    setHTML(
+
+        "platinumMember",
+
+        dashboardData.platinum || 0
+
+    );
+
+    setHTML(
+
+        "rewardReady",
+
+        dashboardData.rewardReady || 0
+
+    );
+
+    setHTML(
+
+        "visitToday",
+
+        dashboardData.visitToday || 0
+
+    );
+
+    setHTML(
+
+        "visitMonth",
+
+        dashboardData.visitMonth || 0
+
+    );
+
+    setHTML(
+
+        "newMemberMonth",
+
+        dashboardData.newMemberMonth || 0
+
+    );
+
+}
+
+/* ==========================================================
+MEMBER
+========================================================== */
+
+function loadMembers(){
+
+    showLoading();
+
+    google.script.run
+
+    .withSuccessHandler(function(result){
+
+        members=result || [];
+
+        renderMembers(members);
+
+        hideLoading();
+
+    })
+
+    .withFailureHandler(serverError)
+
+    .getMembers();
+
+}
+
+function renderMembers(data){
+
+    const tbody=document.getElementById(
+
+        "memberTableBody"
+
+    );
+
+    if(!tbody){
+
+        return;
+
+    }
+
+    tbody.innerHTML="";
+
+    if(data.length===0){
+
+        tbody.innerHTML=`
+
+        <tr>
+
+            <td colspan="8">
+
+                <div class="empty-state">
+
+                    <i class="bi bi-people"></i>
+
+                    <h5>
+
+                        Belum ada member
+
+                    </h5>
+
+                    <p>
+
+                        Tambahkan member pertama.
+
+                    </p>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+    data.forEach(function(member){
+
+        tbody.innerHTML+=memberRow(member);
+
+    });
+
+}
+
+function memberRow(member){
+
+    let levelClass="bg-secondary";
+
+    switch(member[7]){
+
+        case "Gold":
+
+            levelClass="bg-warning text-dark";
+
+            break;
+
+        case "Platinum":
+
+            levelClass="bg-primary";
+
+            break;
+
+    }
+
+    const statusClass=
+
+    member[6]==="Inactive"
+
+    ?"bg-danger"
+
+    :"bg-success";
+
+    return`
+
+<tr>
+
+<td>${member[0]}</td>
+
+<td>${member[1]}</td>
+
+<td>${member[2]}</td>
+
+<td>${member[3]}</td>
+
+<td>${member[4]}</td>
+
+<td>
+
+<span class="badge ${levelClass}">
+
+${member[7]}
+
+</span>
+
+</td>
+
+<td>
+
+<span class="badge ${statusClass}">
+
+${member[6]}
+
+</span>
+
+</td>
+
+<td>
+
+<div class="action-buttons">
+
+<button
+
+class="btn btn-success btn-sm"
+
+onclick="quickVisit('${member[0]}')">
+
+Visit
+
+</button>
+
+<button
+
+class="btn btn-warning btn-sm"
+
+onclick="editMember('${member[0]}')">
+
+Edit
+
+</button>
+
+<button
+
+class="btn btn-danger btn-sm"
+
+onclick="removeMember('${member[0]}')">
+
+Inactive
+
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+}
+
+/* ==========================================================
+SEARCH MEMBER
+========================================================== */
+
+function bindMemberSearch(){
+
+    const search=document.getElementById(
+
+        "searchMember"
+
+    );
+
+    if(search){
+
+        search.addEventListener(
+
+            "keyup",
+
+            searchMember
+
+        );
+
+    }
+
+    const level=document.getElementById(
+
+        "filterLevel"
+
+    );
+
+    if(level){
+
+        level.addEventListener(
+
+            "change",
+
+            searchMember
+
+        );
+
+    }
+
+    const status=document.getElementById(
+
+        "filterStatus"
+
+    );
+
+    if(status){
+
+        status.addEventListener(
+
+            "change",
+
+            searchMember
+
+        );
+
+    }
+
+}
+
+function searchMember(){
+
+    const keyword=
+
+    getValue("searchMember")
+
+    .toLowerCase();
+
+    const level=
+
+    getValue("filterLevel");
+
+    const status=
+
+    getValue("filterStatus");
+
+    const filtered=
+
+    members.filter(function(item){
+
+        const found=
+
+        item.join(" ")
+
+        .toLowerCase()
+
+        .includes(keyword);
+
+        const levelOK=
+
+        level===""
+
+        ||
+
+        item[7]===level;
+
+        const statusOK=
+
+        status===""
+
+        ||
+
+        item[6]===status;
+
+        return found &&
+
+               levelOK &&
+
+               statusOK;
+
+    });
+
+    renderMembers(filtered);
+
+}
+/* ==========================================================
+OPEN MEMBER MODAL
+========================================================== */
 
 function openMemberModal(){
 
-    editingMemberId = null;
+    editingMemberId=null;
 
     clearMemberForm();
 
-    const title = document.getElementById("memberModalTitle");
+    const title=document.getElementById(
+
+        "memberModalTitle"
+
+    );
 
     if(title){
 
-        title.innerHTML = "Tambah Member";
+        title.innerHTML="Tambah Member";
 
     }
 
@@ -283,46 +884,9 @@ function closeMemberModal(){
 
 }
 
-
-function closeVisitModal(){
-
-    if(visitModal){
-
-        visitModal.hide();
-
-    }
-
-}
-
-/* =====================================================
-   HELPER
-===================================================== */
-
-function setValue(id,value){
-
-    const el=document.getElementById(id);
-
-    if(el){
-
-        el.innerHTML=value ?? "";
-
-    }
-
-}
-
-function getValue(id){
-
-    const el=document.getElementById(id);
-
-    if(!el) return "";
-
-    return el.value.trim();
-
-}
-
 function clearMemberForm(){
 
-    const fields = [
+    [
 
         "memberName",
 
@@ -332,216 +896,63 @@ function clearMemberForm(){
 
         "memberVehicle"
 
-    ];
+    ].forEach(function(id){
 
-    fields.forEach(function(id){
-
-        const el = document.getElementById(id);
+        const el=document.getElementById(id);
 
         if(el){
 
-            el.value = "";
+            el.value="";
 
         }
 
     });
 
-    editingMemberId = null;
-
-    const title = document.getElementById("memberModalTitle");
-
-    if(title){
-
-        title.innerHTML = "Tambah Member";
-
-    }
-
-}
-/* =====================================================
-   MEMBER MODULE
-===================================================== */
-
-/**
- * LOAD MEMBER
- */
-function loadMembers(){
-
-    showLoading();
-
-    google.script.run
-
-    .withSuccessHandler(function(result){
-
-        hideLoading();
-
-        members = result || [];
-
-        renderMembers();
-
-    })
-
-    .withFailureHandler(serverError)
-
-    .getMembers();
-
 }
 
-/**
- * RENDER MEMBER
- */
+/* ==========================================================
+SAVE MEMBER
+========================================================== */
 
-function renderMembers(list = members){
-
-    const tbody = document.getElementById("memberTableBody");
-
-    if(!tbody) return;
-
-    tbody.innerHTML = "";
-
-    if(list.length === 0){
-
-        tbody.innerHTML = `
-
-        <tr>
-
-            <td colspan="8" class="text-center py-5">
-
-                Belum ada member.
-
-            </td>
-
-        </tr>
-
-        `;
-
-        return;
-
-    }
-
-    list.forEach(member=>{
-
-        tbody.innerHTML += createMemberRow(member);
-
-    });
-
-}
-
-/**
- * TEMPLATE ROW
- */
-
-function createMemberRow(member){
-
-    const level = member[7] || "Silver";
-    const status = member[6] || "Active";
-
-    let levelBadge = "bg-secondary";
-
-    if(level==="Silver") levelBadge="bg-secondary";
-    if(level==="Gold") levelBadge="bg-warning text-dark";
-    if(level==="Platinum") levelBadge="bg-primary";
-
-    let statusBadge = "bg-success";
-
-    if(status==="Inactive"){
-
-        statusBadge="bg-danger";
-
-    }
-
-    return `
-
-    <tr>
-
-        <td>${member[0]}</td>
-
-        <td>${member[1]}</td>
-
-        <td>${member[2]}</td>
-
-        <td>${member[3]}</td>
-
-        <td>${member[4]}</td>
-
-        <td>
-
-            <span class="badge ${levelBadge}">
-
-                ${level}
-
-            </span>
-
-        </td>
-
-        <td>
-
-            <span class="badge ${statusBadge}">
-
-                ${status}
-
-            </span>
-
-        </td>
-
-        <td>
-
-            <div class="btn-group">
-
-                <button
-                class="btn btn-success btn-sm"
-                onclick="quickVisit('${member[0]}')">
-
-                Visit
-
-                </button>
-
-                <button
-                class="btn btn-warning btn-sm"
-                onclick="editMember('${member[0]}')">
-
-                Edit
-
-                </button>
-
-                <button
-                class="btn btn-danger btn-sm"
-                onclick="removeMember('${member[0]}')">
-
-                Inactive
-
-                </button>
-
-            </div>
-
-        </td>
-
-    </tr>
-
-    `;
-
-}
-/* =====================================
-   CREATE MEMBER
-===================================== */
 function saveMember(){
 
-    const data = {
+    const data={
 
-        name: getValue("memberName"),
-        phone: getValue("memberPhone"),
-        plate: getValue("memberPlate"),
-        vehicle: getValue("memberVehicle")
+        name:getValue("memberName"),
+
+        phone:getValue("memberPhone"),
+
+        plate:getValue("memberPlate")
+
+            .toUpperCase(),
+
+        vehicle:getValue("memberVehicle")
 
     };
 
     if(
-        !data.name ||
-        !data.phone ||
-        !data.plate ||
-        !data.vehicle
+
+        data.name===""
+
+        ||
+
+        data.phone===""
+
+        ||
+
+        data.plate===""
+
+        ||
+
+        data.vehicle===""
+
     ){
 
-        showToast("Lengkapi seluruh data.");
+        showToast(
+
+            "Lengkapi seluruh data."
+
+        );
 
         return;
 
@@ -553,13 +964,24 @@ function saveMember(){
 
         google.script.run
 
-        .withSuccessHandler(afterSaveMember)
+        .withSuccessHandler(
 
-        .withFailureHandler(serverError)
+            afterSaveMember
+
+        )
+
+        .withFailureHandler(
+
+            serverError
+
+        )
 
         .updateMember(
+
             editingMemberId,
+
             data
+
         );
 
         return;
@@ -568,9 +990,17 @@ function saveMember(){
 
     google.script.run
 
-    .withSuccessHandler(afterSaveMember)
+    .withSuccessHandler(
 
-    .withFailureHandler(serverError)
+        afterSaveMember
+
+    )
+
+    .withFailureHandler(
+
+        serverError
+
+    )
 
     .createMember(data);
 
@@ -588,9 +1018,7 @@ function afterSaveMember(result){
 
     }
 
-    editingMemberId = null;
-
-    clearMemberForm();
+    editingMemberId=null;
 
     closeMemberModal();
 
@@ -601,9 +1029,92 @@ function afterSaveMember(result){
     showToast(result.message);
 
 }
-function removeMember(memberId){
 
-    if(!confirm("Nonaktifkan member ini?")){
+/* ==========================================================
+EDIT MEMBER
+========================================================== */
+
+function editMember(id){
+
+    const member=
+
+    members.find(function(item){
+
+        return item[0]===id;
+
+    });
+
+    if(!member){
+
+        showToast(
+
+            "Member tidak ditemukan."
+
+        );
+
+        return;
+
+    }
+
+    editingMemberId=id;
+
+    setInput(
+
+        "memberName",
+
+        member[1]
+
+    );
+
+    setInput(
+
+        "memberPhone",
+
+        member[2]
+
+    );
+
+    setInput(
+
+        "memberPlate",
+
+        member[3]
+
+    );
+
+    setInput(
+
+        "memberVehicle",
+
+        member[4]
+
+    );
+
+    document.getElementById(
+
+        "memberModalTitle"
+
+    ).innerHTML="Edit Member";
+
+    memberModal.show();
+
+}
+
+/* ==========================================================
+REMOVE MEMBER
+========================================================== */
+
+function removeMember(id){
+
+    if(
+
+        !confirm(
+
+            "Nonaktifkan member ini?"
+
+        )
+
+    ){
 
         return;
 
@@ -625,111 +1136,31 @@ function removeMember(memberId){
 
     })
 
-    .withFailureHandler(serverError)
+    .withFailureHandler(
 
-    .deactivateMember(memberId);
+        serverError
 
-}
-function serverError(err){
+    )
 
-    hideLoading();
-
-    showToast(err.message);
-
-}
-/* =====================================
-   SEARCH MEMBER
-===================================== */
-
-function searchMemberRealtime(){
-
-    const keyword = getValue("searchMember").toLowerCase();
-
-    const level = document.getElementById("filterLevel").value;
-
-    const status = document.getElementById("filterStatus").value;
-
-    const result = members.filter(function(member){
-
-        const search =
-
-            String(member[0]).toLowerCase().includes(keyword) ||
-
-            String(member[1]).toLowerCase().includes(keyword) ||
-
-            String(member[2]).toLowerCase().includes(keyword) ||
-
-            String(member[3]).toLowerCase().includes(keyword);
-
-        const levelOK =
-
-            level==="" ||
-
-            member[7]===level;
-
-        const statusOK =
-
-            status==="" ||
-
-            member[6]===status;
-
-        return search && levelOK && statusOK;
-
-    });
-
-    renderMembers(result);
+    .deactivateMember(id);
 
 }
 
-/* =====================================
-   EDIT MEMBER
-===================================== */
-
-function editMember(memberId){
-
-    const member = members.find(function(item){
-
-        return item[0] === memberId;
-
-    });
-
-    if(!member){
-
-        showToast("Member tidak ditemukan.");
-
-        return;
-
-    }
-
-    editingMemberId = memberId;
-
-    document.getElementById("memberName").value = member[1];
-
-    document.getElementById("memberPhone").value = member[2];
-
-    document.getElementById("memberPlate").value = member[3];
-
-    document.getElementById("memberVehicle").value = member[4];
-
-    const title = document.getElementById("memberModalTitle");
-
-    if(title){
-
-        title.innerHTML = "Edit Member";
-
-    }
-
-    memberModal.show();
-
-}
-
-/* =====================================
-   QUICK VISIT
-===================================== */
+/* ==========================================================
+QUICK VISIT
+========================================================== */
 
 function quickVisit(memberId){
 
-    if(!confirm("Tambah visit sekarang?")){
+    if(
+
+        !confirm(
+
+            "Tambah visit sekarang?"
+
+        )
+
+    ){
 
         return;
 
@@ -739,33 +1170,32 @@ function quickVisit(memberId){
 
     google.script.run
 
-    .withSuccessHandler(function(res){
+    .withSuccessHandler(function(result){
 
         hideLoading();
 
-        showToast(res.message);
+        showToast(result.message);
 
         loadDashboard();
 
         loadMembers();
 
-        if(typeof loadVisits==="function"){
-
-            loadVisits();
-
-        }
+        loadVisits();
 
     })
 
-    .withFailureHandler(serverError)
+    .withFailureHandler(
+
+        serverError
+
+    )
 
     .createVisit(memberId);
 
 }
-
-/* =====================================================
-   VISIT MODULE
-===================================================== */
+/* ==========================================================
+VISIT MODULE
+========================================================== */
 
 function loadVisits(){
 
@@ -773,9 +1203,9 @@ function loadVisits(){
 
     google.script.run
 
-    .withSuccessHandler(function(data){
+    .withSuccessHandler(function(result){
 
-        visits = data || [];
+        visits=result || [];
 
         renderVisits(visits);
 
@@ -791,9 +1221,17 @@ function loadVisits(){
 
 function renderVisits(data){
 
-    const tbody=document.getElementById("visitTableBody");
+    const tbody=document.getElementById(
 
-    if(!tbody) return;
+        "visitTableBody"
+
+    );
+
+    if(!tbody){
+
+        return;
+
+    }
 
     tbody.innerHTML="";
 
@@ -801,51 +1239,71 @@ function renderVisits(data){
 
         tbody.innerHTML=`
 
-        <tr>
+<tr>
 
-            <td colspan="4" class="text-center py-5">
+<td colspan="4">
 
-                Belum ada data visit.
+<div class="empty-state">
 
-            </td>
+<i class="bi bi-car-front"></i>
 
-        </tr>
+<h5>
 
-        `;
+Belum ada visit
+
+</h5>
+
+<p>
+
+Riwayat kunjungan akan muncul di sini.
+
+</p>
+
+</div>
+
+</td>
+
+</tr>
+
+`;
 
         return;
 
     }
 
-    data.forEach(v=>{
+    data.forEach(function(item){
 
-        tbody.innerHTML += `
+        tbody.innerHTML+=`
 
-        <tr>
+<tr>
 
-            <td>${v[0]}</td>
+<td>${item[0]}</td>
 
-            <td>${v[1]}</td>
+<td>${item[1]}</td>
 
-            <td>${v[2]}</td>
+<td>${item[2]}</td>
 
-            <td>${v[3]}</td>
+<td>${item[3]}</td>
 
-        </tr>
+</tr>
 
-        `;
+`;
 
     });
 
 }
 
-/* ==========================================
-   OPEN VISIT MODAL
-========================================== */
+/* ==========================================================
+VISIT MODAL
+========================================================== */
 
 function openVisitModal(){
 
-    const input=document.getElementById("visitMemberID");
+    const input=document.getElementById(
+
+        "visitMemberID"
+
+    );
 
     if(input){
 
@@ -853,25 +1311,33 @@ function openVisitModal(){
 
     }
 
-    if(visitModal){
-
-        visitModal.show();
-
-    }
+    visitModal.show();
 
 }
 
-/* ==========================================
-   SAVE VISIT
-========================================== */
+function closeVisitModal(){
+
+    visitModal.hide();
+
+}
+
+/* ==========================================================
+SAVE VISIT
+========================================================== */
 
 function saveVisit(){
 
-    const memberId=getValue("visitMemberID");
+    const memberId=
+
+    getValue("visitMemberID");
 
     if(memberId===""){
 
-        showToast("Masukkan Member ID.");
+        showToast(
+
+            "Masukkan Member ID."
+
+        );
 
         return;
 
@@ -885,37 +1351,89 @@ function saveVisit(){
 
         hideLoading();
 
-        if(result.success){
+        if(!result.success){
 
-            closeVisitModal();
+            showToast(
 
-            showToast(result.message);
+                result.message
 
-            loadVisits();
+            );
 
-            loadMembers();
-
-            loadDashboard();
-
-        }else{
-
-            showToast(result.message);
+            return;
 
         }
 
+        visitModal.hide();
+
+        loadVisits();
+
+        loadDashboard();
+
+        loadMembers();
+
+        showToast(
+
+            result.message
+
+        );
+
     })
 
-    .withFailureHandler(serverError)
+    .withFailureHandler(
+
+        serverError
+
+    )
 
     .createVisit(memberId);
 
 }
 
-/* ==========================================
-   SEARCH VISIT
-========================================== */
+/* ==========================================================
+SEARCH VISIT
+========================================================== */
 
-function searchVisitRealtime(){
+function bindVisitSearch(){
+
+    const search=document.getElementById(
+
+        "searchVisit"
+
+    );
+
+    if(search){
+
+        search.addEventListener(
+
+            "keyup",
+
+            searchVisit
+
+        );
+
+    }
+
+    const date=document.getElementById(
+
+        "visitDate"
+
+    );
+
+    if(date){
+
+        date.addEventListener(
+
+            "change",
+
+            searchVisit
+
+        );
+
+    }
+
+}
+
+function searchVisit(){
 
     const keyword=
 
@@ -923,69 +1441,42 @@ function searchVisitRealtime(){
 
     .toLowerCase();
 
-    if(keyword===""){
+    const date=
 
-        renderVisits(visits);
+    getValue("visitDate");
 
-        return;
+    const filtered=
 
-    }
+    visits.filter(function(item){
 
-    const filtered=visits.filter(v=>{
+        const search=
 
-        return(
+        item.join(" ")
 
-            String(v[0]).toLowerCase().includes(keyword)||
+        .toLowerCase()
 
-            String(v[1]).toLowerCase().includes(keyword)||
+        .includes(keyword);
 
-            String(v[2]).toLowerCase().includes(keyword)||
+        const dateOK=
 
-            String(v[3]).toLowerCase().includes(keyword)
+        date===""
 
-        );
+        ||
 
-    });
+        String(item[2])
 
-    renderVisits(filtered);
+        .startsWith(date);
 
-}
-
-/* ==========================================
-   FILTER TANGGAL
-========================================== */
-
-function filterVisitDate(){
-
-    const value=document.getElementById("visitDate").value;
-
-    if(value===""){
-
-        renderVisits(visits);
-
-        return;
-
-    }
-
-    const filtered=visits.filter(v=>{
-
-        return String(v[2]).startsWith(value);
+        return search && dateOK;
 
     });
 
     renderVisits(filtered);
 
 }
-
-/* ==========================================
-   AUTO EVENT
-========================================== */
-
-
-
-/* =====================================================
-   REWARD MODULE
-===================================================== */
+ /* ==========================================================
+REWARD MODULE
+========================================================== */
 
 function loadRewards(){
 
@@ -993,9 +1484,9 @@ function loadRewards(){
 
     google.script.run
 
-    .withSuccessHandler(function(data){
+    .withSuccessHandler(function(result){
 
-        rewards = data || [];
+        rewards=result || [];
 
         renderRewards(rewards);
 
@@ -1004,16 +1495,24 @@ function loadRewards(){
     })
 
     .withFailureHandler(serverError)
-       
+
     .getRewards();
 
 }
 
 function renderRewards(data){
 
-    const tbody=document.getElementById("rewardTableBody");
+    const tbody=document.getElementById(
 
-    if(!tbody) return;
+        "rewardTableBody"
+
+    );
+
+    if(!tbody){
+
+        return;
+
+    }
 
     tbody.innerHTML="";
 
@@ -1021,77 +1520,115 @@ function renderRewards(data){
 
         tbody.innerHTML=`
 
-        <tr>
+<tr>
 
-            <td colspan="5" class="text-center py-5">
+<td colspan="5">
 
-                Belum ada reward.
+<div class="empty-state">
 
-            </td>
+<i class="bi bi-gift"></i>
 
-        </tr>
+<h5>
 
-        `;
+Belum ada reward
+
+</h5>
+
+<p>
+
+Reward member akan muncul di sini.
+
+</p>
+
+</div>
+
+</td>
+
+</tr>
+
+`;
 
         return;
 
     }
 
-    data.forEach(r=>{
+    data.forEach(function(item){
 
-        const badge=
+        let badge=
 
-        r[3]==="Ready"
+        '<span class="badge bg-secondary">'
 
-        ?'<span class="badge bg-success">Ready</span>'
+        +item[3]+
 
-        :'<span class="badge bg-secondary">'+r[3]+'</span>';
+        '</span>';
+
+        if(item[3]==="Ready"){
+
+            badge=
+
+            '<span class="badge bg-success">Ready</span>';
+
+        }
 
         tbody.innerHTML+=`
 
-        <tr>
+<tr>
 
-            <td>${r[0]}</td>
+<td>${item[0]}</td>
 
-            <td>${r[1]}</td>
+<td>${item[1]}</td>
 
-            <td>${r[2]}</td>
+<td>${item[2]}</td>
 
-            <td>${badge}</td>
+<td>${badge}</td>
 
-            <td>
+<td>
 
-                ${r[3]==="Ready"
+${item[3]==="Ready"
 
-                ?`
+?
 
-                <button
+`<button
 
-                    class="btn btn-success btn-sm"
+class="btn btn-success btn-sm"
 
-                    onclick="claimReward('${r[0]}')">
+onclick="claimReward('${item[0]}')">
 
-                    Claim
+Claim
 
-                </button>
+</button>`
 
-                `
+:
 
-                :"-"}
+"-"
 
-            </td>
+}
 
-        </tr>
+</td>
 
-        `;
+</tr>
+
+`;
 
     });
 
 }
 
-function claimReward(rewardId){
+/* ==========================================================
+CLAIM REWARD
+========================================================== */
 
-    if(!confirm("Claim reward ini?")){
+function claimReward(id){
+
+    if(
+
+        !confirm(
+
+            "Claim reward ini?"
+
+        )
+
+    ){
 
         return;
 
@@ -1111,45 +1648,178 @@ function claimReward(rewardId){
 
         loadDashboard();
 
+        loadMembers();
+
     })
 
-    .withFailureHandler(serverError)
+    .withFailureHandler(
 
-    .claimReward(rewardId);
+        serverError
+
+    )
+
+    .claimReward(id);
 
 }
 
-/* =====================================================
-   SETTINGS MODULE
-===================================================== */
+/* ==========================================================
+SEARCH REWARD
+========================================================== */
+
+function bindRewardSearch(){
+
+    const search=document.getElementById(
+
+        "searchReward"
+
+    );
+
+    if(search){
+
+        search.addEventListener(
+
+            "keyup",
+
+            searchReward
+
+        );
+
+    }
+
+    const status=document.getElementById(
+
+        "rewardStatus"
+
+    );
+
+    if(status){
+
+        status.addEventListener(
+
+            "change",
+
+            searchReward
+
+        );
+
+    }
+
+}
+
+function searchReward(){
+
+    const keyword=
+
+    getValue("searchReward")
+
+    .toLowerCase();
+
+    const status=
+
+    getValue("rewardStatus");
+
+    const filtered=
+
+    rewards.filter(function(item){
+
+        const found=
+
+        item.join(" ")
+
+        .toLowerCase()
+
+        .includes(keyword);
+
+        const statusOK=
+
+        status===""
+
+        ||
+
+        item[3]===status;
+
+        return found && statusOK;
+
+    });
+
+    renderRewards(filtered);
+
+}
+/* ==========================================================
+SETTINGS MODULE
+========================================================== */
 
 function loadSettings(){
 
+    showLoading();
+
     google.script.run
 
-    .withSuccessHandler(function(data){
+    .withSuccessHandler(function(result){
 
-        settings=data||{};
+        settings=result || {};
 
-        setInput("businessName",settings.BusinessName);
+        setInput(
 
-        setInput("businessPhone",settings.BusinessPhone);
+            "businessName",
 
-        setInput("businessAddress",settings.BusinessAddress);
+            settings.BusinessName
 
-        setInput("settingReward",settings.RewardTarget);
+        );
 
-        setInput("settingGold",settings.GoldTarget);
+        setInput(
 
-        setInput("settingPlatinum",settings.PlatinumTarget);
+            "businessPhone",
+
+            settings.BusinessPhone
+
+        );
+
+        setInput(
+
+            "businessAddress",
+
+            settings.BusinessAddress
+
+        );
+
+        setInput(
+
+            "settingReward",
+
+            settings.RewardTarget
+
+        );
+
+        setInput(
+
+            "settingGold",
+
+            settings.GoldTarget
+
+        );
+
+        setInput(
+
+            "settingPlatinum",
+
+            settings.PlatinumTarget
+
+        );
+
+        hideLoading();
 
     })
-       
+
     .withFailureHandler(serverError)
-       
+
     .getSettings();
 
 }
+
+/* ==========================================================
+SAVE SETTINGS
+========================================================== */
 
 function saveSettings(){
 
@@ -1157,31 +1827,83 @@ function saveSettings(){
 
     const items=[
 
-        ["BusinessName",getValue("businessName")],
+        [
 
-        ["BusinessPhone",getValue("businessPhone")],
+            "BusinessName",
 
-        ["BusinessAddress",getValue("businessAddress")],
+            getValue("businessName")
 
-        ["RewardTarget",getValue("settingReward")],
+        ],
 
-        ["GoldTarget",getValue("settingGold")],
+        [
 
-        ["PlatinumTarget",getValue("settingPlatinum")]
+            "BusinessPhone",
+
+            getValue("businessPhone")
+
+        ],
+
+        [
+
+            "BusinessAddress",
+
+            getValue("businessAddress")
+
+        ],
+
+        [
+
+            "RewardTarget",
+
+            getValue("settingReward")
+
+        ],
+
+        [
+
+            "GoldTarget",
+
+            getValue("settingGold")
+
+        ],
+
+        [
+
+            "PlatinumTarget",
+
+            getValue("settingPlatinum")
+
+        ]
 
     ];
 
-    saveSettingQueue(items,0);
+    updateSettingQueue(
+
+        items,
+
+        0
+
+    );
 
 }
 
-function saveSettingQueue(items,index){
+function updateSettingQueue(
+
+    items,
+
+    index
+
+){
 
     if(index>=items.length){
 
         hideLoading();
 
-        showToast("Setting berhasil disimpan.");
+        showToast(
+
+            "Setting berhasil disimpan."
+
+        );
 
         loadDashboard();
 
@@ -1193,17 +1915,17 @@ function saveSettingQueue(items,index){
 
     .withSuccessHandler(function(){
 
-        saveSettingQueue(items,index+1);
+        updateSettingQueue(
+
+            items,
+
+            index+1
+
+        );
 
     })
 
-    .withFailureHandler(function(err){
-
-        hideLoading();
-
-        showToast(err.message);
-
-    })
+    .withFailureHandler(serverError)
 
     .updateSetting(
 
@@ -1215,181 +1937,25 @@ function saveSettingQueue(items,index){
 
 }
 
-/* =====================================================
-   HELPER
-===================================================== */
-
-function setInput(id,value){
-
-    const el=document.getElementById(id);
-
-    if(el){
-
-        el.value=value ?? "";
-
-    }
-
-}
-
-/* =====================================================
-   GLOBAL SEARCH
-===================================================== */
-
-function debounce(callback, delay = 300){
-
-    let timer;
-
-    return function(){
-
-        clearTimeout(timer);
-
-        const args = arguments;
-
-        timer = setTimeout(() => {
-
-            callback.apply(this,args);
-
-        },delay);
-
-    };
-
-}
-
-/* =====================================================
-   REFRESH
-===================================================== */
-
-function refreshAll(){
-
-    loadDashboard();
-
-    loadMembers();
-
-    if(typeof loadVisits==="function"){
-
-        loadVisits();
-
-    }
-
-    if(typeof loadRewards==="function"){
-
-        loadRewards();
-
-    }
-
-}
-
-/* =====================================================
-   EXPORT
-===================================================== */
-
-function exportMembers(){
-
-    showToast("Fitur Export akan tersedia pada versi berikutnya.");
-
-}
-
-function exportVisits(){
-
-    showToast("Fitur Export akan tersedia pada versi berikutnya.");
-
-}
-
-function exportRewards(){
-
-    showToast("Fitur Export akan tersedia pada versi berikutnya.");
-
-}
-
-/* =====================================================
-   UTIL
-===================================================== */
-
-function currency(number){
-
-    return new Intl.NumberFormat("id-ID").format(number);
-
-}
-
-function formatDateTime(date){
-
-    if(!date) return "";
-
-    try{
-
-        return new Date(date)
-
-        .toLocaleString("id-ID");
-
-    }catch(e){
-
-        return date;
-
-    }
-
-}
-
-function capitalize(text){
-
-    if(!text) return "";
-
-    return text
-
-        .toString()
-
-        .toLowerCase()
-
-        .replace(/\b\w/g,function(l){
-
-            return l.toUpperCase();
-
-        });
-
-}
-
-/* =====================================================
-   SHORTCUT
-===================================================== */
-
-document.addEventListener("keydown",function(e){
-
-    if(e.ctrlKey && e.key==="r"){
-
-        e.preventDefault();
-
-        refreshAll();
-
-    }
-
-});
-
-/* =====================================================
-   CONNECTION
-===================================================== */
-
-window.addEventListener("online",function(){
-
-    showToast("Koneksi kembali online.");
-
-});
-
-window.addEventListener("offline",function(){
-
-    showToast("Koneksi internet terputus.");
-
-});
-
-/* =====================================================
-   AUTO REFRESH
-===================================================== */
+/* ==========================================================
+AUTO REFRESH
+========================================================== */
 
 setInterval(function(){
 
-    const page=document.querySelector(".menu a.active");
+    const active=document.querySelector(
 
-    if(!page) return;
+        ".sidebar .menu-item.active"
 
-    switch(page.dataset.page){
+    );
+
+    if(!active){
+
+        return;
+
+    }
+
+    switch(active.dataset.page){
 
         case "dashboardPage":
 
@@ -1405,21 +1971,13 @@ setInterval(function(){
 
         case "visitsPage":
 
-            if(typeof loadVisits==="function"){
-
-                loadVisits();
-
-            }
+            loadVisits();
 
             break;
 
         case "rewardsPage":
 
-            if(typeof loadRewards==="function"){
-
-                loadRewards();
-
-            }
+            loadRewards();
 
             break;
 
@@ -1427,10 +1985,112 @@ setInterval(function(){
 
 },60000);
 
-/* =====================================================
-   START
-===================================================== */
+/* ==========================================================
+KEYBOARD SHORTCUT
+========================================================== */
 
-console.log("Neighbor Place CRM v1.0 Loaded");
+document.addEventListener(
 
-</script>
+    "keydown",
+
+    function(e){
+
+        if(
+
+            e.ctrlKey &&
+
+            e.key==="r"
+
+        ){
+
+            e.preventDefault();
+
+            refreshAll();
+
+        }
+
+    }
+
+);
+
+/* ==========================================================
+NETWORK STATUS
+========================================================== */
+
+window.addEventListener(
+
+    "online",
+
+    function(){
+
+        showToast(
+
+            "Koneksi kembali online."
+
+        );
+
+    }
+
+);
+
+window.addEventListener(
+
+    "offline",
+
+    function(){
+
+        showToast(
+
+            "Koneksi internet terputus."
+
+        );
+
+    }
+
+);
+
+/* ==========================================================
+EXPORT PLACEHOLDER
+========================================================== */
+
+function exportMembers(){
+
+    showToast(
+
+        "Export akan tersedia pada update berikutnya."
+
+    );
+
+}
+
+function exportVisits(){
+
+    showToast(
+
+        "Export akan tersedia pada update berikutnya."
+
+    );
+
+}
+
+function exportRewards(){
+
+    showToast(
+
+        "Export akan tersedia pada update berikutnya."
+
+    );
+
+}
+
+/* ==========================================================
+END
+========================================================== */
+
+console.log(
+
+    "Neighbor Place CRM v2 Loaded"
+
+);
+
+</script>   
