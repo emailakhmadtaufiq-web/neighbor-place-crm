@@ -44,11 +44,7 @@ function updateSetting(key, value) {
 
       sheet.getRange(i + 1, 2).setValue(value);
 
-      createLog(
-        "UPDATE_SETTING",
-        "",
-        key + " = " + value
-      );
+      logUpdateSetting(key);
 
       return true;
 
@@ -58,11 +54,7 @@ function updateSetting(key, value) {
 
   sheet.appendRow([key, value]);
 
-  createLog(
-    "CREATE_SETTING",
-    "",
-    key + " = " + value
-  );
+  logUpdateSetting(key);
 
   return true;
 
