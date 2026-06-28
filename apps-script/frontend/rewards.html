@@ -1,62 +1,156 @@
-<section id="rewardsPage" class="page" style="display:none;">
+<!-- ==========================================================
+FILE : rewards.html
+PART (1)
+PROJECT : Neighbor Place CRM v2
+========================================================== -->
 
-    <div class="topbar">
+<section
+
+    id="rewardsPage"
+
+    class="page"
+
+    style="display:none;">
+
+    <!-- ===========================================
+    PAGE HEADER
+    ============================================ -->
+
+    <div
+
+        class="d-flex
+
+               justify-content-between
+
+               align-items-center
+
+               flex-wrap
+
+               mb-4">
 
         <div>
 
-            <h2>Rewards</h2>
+            <h2 class="fw-bold mb-1">
 
-            <small>Manajemen Reward Member</small>
+                Reward Management
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Daftar seluruh reward member Neighbor Place
+
+            </p>
 
         </div>
 
-        <button
-            class="btn btn-success"
-            onclick="loadRewards()">
+        <div class="d-flex gap-2">
 
-            <i class="bi bi-arrow-clockwise"></i>
+            <button
 
-            Refresh
+                class="btn btn-outline-success"
 
-        </button>
+                onclick="loadRewards()">
+
+                <i class="bi bi-arrow-repeat"></i>
+
+                Refresh
+
+            </button>
+
+        </div>
 
     </div>
 
+    <!-- ===========================================
+    FILTER
+    ============================================ -->
+
     <div class="table-card">
 
-        <div class="row mb-4">
+        <div class="row g-3">
 
-            <div class="col-md-5">
+            <div class="col-lg-5">
 
-                <input
-                    id="searchReward"
-                    class="form-control"
-                    placeholder="Cari Member ID">
+                <label class="form-label">
+
+                    Cari Reward
+
+                </label>
+
+                <div class="search-group">
+
+                    <i class="bi bi-search"></i>
+
+                    <input
+
+                        id="searchReward"
+
+                        class="form-control"
+
+                        placeholder="Cari Member ID atau Reward ID">
+
+                </div>
 
             </div>
 
-            <div class="col-md-3">
+            <div class="col-lg-3">
+
+                <label class="form-label">
+
+                    Status Reward
+
+                </label>
 
                 <select
+
                     id="rewardStatus"
+
                     class="form-select">
 
-                    <option value="">Semua Status</option>
+                    <option value="">
 
-                    <option>Ready</option>
+                        Semua Status
 
-                    <option>Claimed</option>
+                    </option>
 
-                    <option>Expired</option>
+                    <option>
+
+                        Ready
+
+                    </option>
+
+                    <option>
+
+                        Claimed
+
+                    </option>
+
+                    <option>
+
+                        Expired
+
+                    </option>
 
                 </select>
 
             </div>
 
-            <div class="col-md-2">
+            <div
+
+                class="col-lg-2
+
+                       d-flex
+
+                       align-items-end">
 
                 <button
-                    class="btn btn-outline-success w-100">
+
+                    class="btn btn-outline-success w-100"
+
+                    onclick="searchReward()">
+
+                    <i class="bi bi-funnel"></i>
 
                     Filter
 
@@ -64,13 +158,21 @@
 
             </div>
 
-            <div class="col-md-2">
+            <div
+
+                class="col-lg-2
+
+                       d-flex
+
+                       align-items-end">
 
                 <button
+
                     class="btn btn-outline-secondary w-100"
+
                     onclick="loadRewards()">
 
-                    Refresh
+                    Reset
 
                 </button>
 
@@ -78,25 +180,55 @@
 
         </div>
 
+    </div>
+
+    <!-- ===========================================
+    TABLE
+    ============================================ -->
+
+    <div class="table-card">
+
         <div class="table-responsive">
 
-            <table class="table table-hover align-middle">
+            <table
+
+                class="table
+
+                       table-hover
+
+                       align-middle">
 
                 <thead>
 
                     <tr>
 
-                        <th>Reward ID</th>
+                        <th width="140">
 
-                        <th>Member ID</th>
+                            Reward ID
 
-                        <th>Tanggal</th>
+                        </th>
 
-                        <th>Status</th>
+                        <th>
 
-                        <th width="150">
+                            Member ID
 
-                            Aksi
+                        </th>
+
+                        <th>
+
+                            Tanggal Reward
+
+                        </th>
+
+                        <th width="140">
+
+                            Status
+
+                        </th>
+
+                        <th width="170">
+
+                            Action
 
                         </th>
 
@@ -104,11 +236,158 @@
 
                 </thead>
 
-                <tbody id="rewardTableBody">
+                <tbody
+
+                    id="rewardTableBody">
 
                 </tbody>
 
             </table>
+
+        </div>
+
+    </div>
+        <!-- ===========================================
+    INFORMATION PANEL
+    ============================================ -->
+
+    <div class="table-card mt-4">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+                <h5 class="mb-3">
+
+                    Status Reward
+
+                </h5>
+
+                <table
+
+                    class="table table-borderless mb-0">
+
+                    <tbody>
+
+                        <tr>
+
+                            <td width="35">
+
+                                <span class="badge bg-success">
+
+                                    Ready
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                Reward sudah dapat diambil oleh member.
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                <span class="badge bg-secondary">
+
+                                    Claimed
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                Reward telah berhasil diklaim.
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                <span class="badge bg-danger">
+
+                                    Expired
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                Reward sudah melewati masa berlaku.
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="col-lg-6">
+
+                <div
+
+                    class="alert alert-success
+
+                           h-100
+
+                           mb-0">
+
+                    <h6 class="fw-bold">
+
+                        Informasi
+
+                    </h6>
+
+                    <p class="mb-2">
+
+                        Reward akan muncul secara otomatis
+                        berdasarkan jumlah visit yang telah
+                        ditentukan pada halaman Settings.
+
+                    </p>
+
+                    <ul class="mb-0">
+
+                        <li>
+
+                            Sistem menghitung visit otomatis.
+
+                        </li>
+
+                        <li>
+
+                            Status berubah menjadi
+                            <strong>Ready</strong>
+                            jika syarat terpenuhi.
+
+                        </li>
+
+                        <li>
+
+                            Klik tombol
+                            <strong>Claim</strong>
+                            untuk menyelesaikan reward.
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
 
         </div>
 
