@@ -1,213 +1,90 @@
+<!-- =========================================================
+    FILE : index.html
+    PART : (1)
+    PROJECT : Neighbor Place CRM v2
+========================================================== -->
+
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
 
-  <base target="_top">
+    <base target="_top">
 
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-  <title>Neighbor Place CRM</title>
+    <title>
+        Neighbor Place CRM
+    </title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
 
-  <?!= include("style"); ?>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+        rel="stylesheet">
+
+    <!-- Google Font -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <?!= include("style"); ?>
 
 </head>
 
 <body>
 
-<div id="app" class="layout">
+<div id="crmApp">
 
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
+<!-- =====================================================
+SIDEBAR
+===================================================== -->
 
-    <aside class="sidebar">
+<aside class="sidebar">
 
-        <div class="sidebar-header">
+    <div class="sidebar-top">
+
+        <div class="brand-logo">
 
             <div class="brand-icon">
-                <i class="bi bi-buildings"></i>
+
+                <i class="bi bi-buildings-fill"></i>
+
             </div>
 
             <div class="brand-text">
 
-                <h4>Neighbor Place</h4>
+                <h4>
 
-                <span>CRM Dashboard</span>
+                    Neighbor Place
 
-            </div>
+                </h4>
 
-        </div>
+                <span>
 
-        <nav class="sidebar-menu">
+                    CRM SYSTEM
 
-            <a href="#"
-               class="menu-item active"
-               data-page="dashboardPage"
-               onclick="openPage('dashboardPage')">
-
-                <i class="bi bi-grid-fill"></i>
-
-                <span>Dashboard</span>
-
-            </a>
-
-            <a href="#"
-               class="menu-item"
-               data-page="membersPage"
-               onclick="openPage('membersPage')">
-
-                <i class="bi bi-people-fill"></i>
-
-                <span>Members</span>
-
-            </a>
-
-            <a href="#"
-               class="menu-item"
-               data-page="visitsPage"
-               onclick="openPage('visitsPage')">
-
-                <i class="bi bi-car-front-fill"></i>
-
-                <span>Visits</span>
-
-            </a>
-
-            <a href="#"
-               class="menu-item"
-               data-page="rewardsPage"
-               onclick="openPage('rewardsPage')">
-
-                <i class="bi bi-gift-fill"></i>
-
-                <span>Rewards</span>
-
-            </a>
-
-            <a href="#"
-               class="menu-item"
-               data-page="settingsPage"
-               onclick="openPage('settingsPage')">
-
-                <i class="bi bi-sliders"></i>
-
-                <span>Settings</span>
-
-            </a>
-
-        </nav>
-
-        <div class="sidebar-footer">
-
-            <div class="version-box">
-
-                <small>Neighbor Place CRM</small>
-
-                <strong>Version 2.0</strong>
-
-            </div>
-
-        </div>
-
-    </aside>
-
-    <!-- =========================
-         MAIN
-    ========================== -->
-
-    <main class="main-wrapper">
-
-        <!-- TOPBAR -->
-
-        <header class="topbar">
-
-            <div>
-
-                <h2 id="pageTitle">
-                    Dashboard
-                </h2>
-
-                <small id="pageDescription">
-                    Customer Loyalty Management System
-                </small>
-
-            </div>
-
-            <div class="topbar-right">
-
-                <button class="btn btn-light shadow-sm"
-                        onclick="location.reload()">
-
-                    <i class="bi bi-arrow-clockwise"></i>
-
-                    Refresh
-
-                </button>
-
-            </div>
-
-        </header>
-
-        <!-- PAGE CONTENT -->
-
-        <section class="page-container">
-
-            <?!= include("dashboard"); ?>
-
-            <?!= include("members"); ?>
-
-            <?!= include("visits"); ?>
-
-            <?!= include("rewards"); ?>
-
-            <?!= include("settings"); ?>
-
-        </section>
-
-    </main>
-
-</div>
-
-<!-- =========================
-     GLOBAL MODAL
-========================== -->
-
-<div class="modal fade"
-     id="globalModal"
-     tabindex="-1">
-
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-
-        <div class="modal-content border-0 shadow">
-
-            <div class="modal-header">
-
-                <h5 class="modal-title"
-                    id="modalTitle">
-
-                    Neighbor Place CRM
-
-                </h5>
-
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal">
-
-                </button>
-
-            </div>
-
-            <div class="modal-body"
-                 id="modalBody">
+                </span>
 
             </div>
 
@@ -215,40 +92,281 @@
 
     </div>
 
-</div>
+    <!-- MENU -->
 
-<!-- =========================
-     LOADING
-========================== -->
+    <nav class="sidebar-menu">
+
+        <button
+
+            class="menu-item active"
+
+            data-page="dashboardPage"
+
+            onclick="openPage('dashboardPage')">
+
+            <i class="bi bi-grid-fill"></i>
+
+            <span>
+
+                Dashboard
+
+            </span>
+
+        </button>
+
+        <button
+
+            class="menu-item"
+
+            data-page="membersPage"
+
+            onclick="openPage('membersPage')">
+
+            <i class="bi bi-people-fill"></i>
+
+            <span>
+
+                Members
+
+            </span>
+
+        </button>
+
+        <button
+
+            class="menu-item"
+
+            data-page="visitsPage"
+
+            onclick="openPage('visitsPage')">
+
+            <i class="bi bi-car-front-fill"></i>
+
+            <span>
+
+                Visits
+
+            </span>
+
+        </button>
+
+        <button
+
+            class="menu-item"
+
+            data-page="rewardsPage"
+
+            onclick="openPage('rewardsPage')">
+
+            <i class="bi bi-gift-fill"></i>
+
+            <span>
+
+                Rewards
+
+            </span>
+
+        </button>
+
+        <button
+
+            class="menu-item"
+
+            data-page="settingsPage"
+
+            onclick="openPage('settingsPage')">
+
+            <i class="bi bi-sliders"></i>
+
+            <span>
+
+                Settings
+
+            </span>
+
+        </button>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <div class="business-card">
+
+            <small>
+
+                Connected
+
+            </small>
+
+            <strong>
+
+                Neighbor Place
+
+            </strong>
+
+            <span>
+
+                Loyalty CRM
+
+            </span>
+
+        </div>
+
+    </div>
+
+</aside>
+
+<!-- =====================================================
+MAIN CONTENT
+===================================================== -->
+
+<main class="main-content">
+
+<!-- =========================================
+TOPBAR
+========================================= -->
+
+<header class="topbar">
+
+    <div class="topbar-left">
+
+        <button
+
+            class="mobile-menu"
+
+            id="mobileMenuButton">
+
+            <i class="bi bi-list"></i>
+
+        </button>
+
+        <div>
+
+            <h2 id="pageTitle">
+
+                Dashboard
+
+            </h2>
+
+            <p id="pageDescription">
+
+                Customer Loyalty Management
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="topbar-right">
+
+        <button
+
+            class="btn btn-outline-success"
+
+            onclick="refreshAll()">
+
+            <i class="bi bi-arrow-clockwise"></i>
+
+            Refresh
+
+        </button>
+
+    </div>
+
+</header>
+
+<!-- =========================================
+CONTENT
+========================================= -->
+
+<section class="content-wrapper">
+
+<!-- =========================================
+DASHBOARD
+========================================= -->
+
+<?!= include("dashboard"); ?>
+
+<!-- =========================================
+MEMBERS
+========================================= -->
+
+<?!= include("members"); ?>
+
+<!-- =========================================
+VISITS
+========================================= -->
+
+<?!= include("visits"); ?>
+
+<!-- =========================================
+REWARDS
+========================================= -->
+
+<?!= include("rewards"); ?>
+
+<!-- =========================================
+SETTINGS
+========================================= -->
+
+<?!= include("settings"); ?>
+
+</section>
+
+</main>
+
+<!-- =====================================================
+GLOBAL LOADING
+===================================================== -->
 
 <div id="loadingOverlay">
 
-    <div class="loading-card">
+    <div class="loading-box">
 
-        <div class="spinner-border text-success"></div>
+        <div
+            class="spinner-border text-success"
+            role="status">
 
-        <h5 class="mt-4 mb-1">
+        </div>
+
+        <h5>
 
             Neighbor Place CRM
 
         </h5>
 
-        <small>
-            Memuat data...
-        </small>
+        <p>
+
+            Loading data...
+
+        </p>
 
     </div>
 
 </div>
+<!-- =========================================================
+    FILE : index.html
+    PART : (2)
+========================================================== -->
 
-<!-- =========================
-     TOAST
-========================== -->
+<!-- =====================================================
+GLOBAL TOAST
+===================================================== -->
 
 <div class="toast-container position-fixed bottom-0 end-0 p-4">
 
-    <div id="appToast"
-         class="toast border-0 shadow">
+    <div
+
+        id="appToast"
+
+        class="toast border-0 shadow"
+
+        role="alert"
+
+        aria-live="assertive"
+
+        aria-atomic="true">
 
         <div class="toast-header">
 
@@ -260,15 +378,29 @@
 
             </strong>
 
-            <button class="btn-close"
-                    data-bs-dismiss="toast">
+            <small>
+
+                CRM
+
+            </small>
+
+            <button
+
+                type="button"
+
+                class="btn-close"
+
+                data-bs-dismiss="toast">
 
             </button>
 
         </div>
 
-        <div class="toast-body"
-             id="toastMessage">
+        <div
+
+            class="toast-body"
+
+            id="toastMessage">
 
         </div>
 
@@ -276,9 +408,211 @@
 
 </div>
 
+<!-- =====================================================
+GLOBAL MODAL
+===================================================== -->
+
+<div
+
+    class="modal fade"
+
+    id="globalModal"
+
+    tabindex="-1"
+
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+
+        <div class="modal-content border-0">
+
+            <div class="modal-header">
+
+                <h5
+
+                    class="modal-title"
+
+                    id="modalTitle">
+
+                    Neighbor Place CRM
+
+                </h5>
+
+                <button
+
+                    type="button"
+
+                    class="btn-close"
+
+                    data-bs-dismiss="modal">
+
+                </button>
+
+            </div>
+
+            <div
+
+                class="modal-body"
+
+                id="modalBody">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+OFFCANVAS MOBILE
+===================================================== -->
+
+<div
+
+    class="offcanvas offcanvas-start"
+
+    tabindex="-1"
+
+    id="mobileSidebar">
+
+    <div class="offcanvas-header">
+
+        <h5>
+
+            Neighbor Place CRM
+
+        </h5>
+
+        <button
+
+            type="button"
+
+            class="btn-close"
+
+            data-bs-dismiss="offcanvas">
+
+        </button>
+
+    </div>
+
+    <div class="offcanvas-body p-0">
+
+        <nav class="mobile-menu-list">
+
+            <button
+
+                class="menu-item"
+
+                onclick="openPage('dashboardPage')"
+
+                data-bs-dismiss="offcanvas">
+
+                <i class="bi bi-grid-fill"></i>
+
+                Dashboard
+
+            </button>
+
+            <button
+
+                class="menu-item"
+
+                onclick="openPage('membersPage')"
+
+                data-bs-dismiss="offcanvas">
+
+                <i class="bi bi-people-fill"></i>
+
+                Members
+
+            </button>
+
+            <button
+
+                class="menu-item"
+
+                onclick="openPage('visitsPage')"
+
+                data-bs-dismiss="offcanvas">
+
+                <i class="bi bi-car-front-fill"></i>
+
+                Visits
+
+            </button>
+
+            <button
+
+                class="menu-item"
+
+                onclick="openPage('rewardsPage')"
+
+                data-bs-dismiss="offcanvas">
+
+                <i class="bi bi-gift-fill"></i>
+
+                Rewards
+
+            </button>
+
+            <button
+
+                class="menu-item"
+
+                onclick="openPage('settingsPage')"
+
+                data-bs-dismiss="offcanvas">
+
+                <i class="bi bi-sliders"></i>
+
+                Settings
+
+            </button>
+
+        </nav>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+BOOTSTRAP
+===================================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- =====================================================
+APPLICATION SCRIPT
+===================================================== -->
+
 <?!= include("script"); ?>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    const button = document.getElementById("mobileMenuButton");
+
+    if(button){
+
+        button.addEventListener("click", function(){
+
+            const sidebar = new bootstrap.Offcanvas(
+
+                document.getElementById("mobileSidebar")
+
+            );
+
+            sidebar.show();
+
+        });
+
+    }
+
+});
+
+</script>
 
 </body>
 
