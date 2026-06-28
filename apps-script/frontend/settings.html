@@ -1,28 +1,76 @@
-<section id="settingsPage" class="page" style="display:none;">
+<!-- ==========================================================
+FILE : settings.html
+PART (1)
+PROJECT : Neighbor Place CRM v2
+========================================================== -->
 
-    <div class="topbar">
+<section
+
+    id="settingsPage"
+
+    class="page"
+
+    style="display:none;">
+
+    <!-- ===========================================
+    PAGE HEADER
+    ============================================ -->
+
+    <div
+
+        class="d-flex
+
+               justify-content-between
+
+               align-items-center
+
+               flex-wrap
+
+               mb-4">
 
         <div>
 
-            <h2>Settings</h2>
+            <h2 class="fw-bold mb-1">
 
-            <small>Konfigurasi Neighbor Place CRM</small>
+                Settings
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Konfigurasi Neighbor Place CRM
+
+            </p>
 
         </div>
 
-        <button
-            class="btn btn-success"
-            onclick="saveSettings()">
+        <div class="d-flex gap-2">
 
-            <i class="bi bi-floppy"></i>
+            <button
 
-            Simpan
+                class="btn btn-success"
 
-        </button>
+                onclick="saveSettings()">
+
+                <i class="bi bi-floppy-fill"></i>
+
+                Simpan Perubahan
+
+            </button>
+
+        </div>
 
     </div>
 
-    <div class="row">
+    <!-- ===========================================
+    SETTINGS CONTENT
+    ============================================ -->
+
+    <div class="row g-4">
+
+        <!-- =======================================
+        BUSINESS
+        ======================================== -->
 
         <div class="col-lg-6">
 
@@ -43,8 +91,12 @@
                     </label>
 
                     <input
+
                         id="businessName"
-                        class="form-control">
+
+                        class="form-control"
+
+                        placeholder="Neighbor Place">
 
                 </div>
 
@@ -57,12 +109,16 @@
                     </label>
 
                     <input
+
                         id="businessPhone"
-                        class="form-control">
+
+                        class="form-control"
+
+                        placeholder="08xxxxxxxxxx">
 
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-0">
 
                     <label class="form-label">
 
@@ -71,9 +127,16 @@
                     </label>
 
                     <textarea
+
                         id="businessAddress"
-                        rows="3"
-                        class="form-control"></textarea>
+
+                        rows="4"
+
+                        class="form-control"
+
+                        placeholder="Alamat lengkap bisnis">
+
+                    </textarea>
 
                 </div>
 
@@ -81,13 +144,17 @@
 
         </div>
 
+        <!-- =======================================
+        LOYALTY
+        ======================================== -->
+
         <div class="col-lg-6">
 
             <div class="table-card">
 
                 <h5 class="mb-4">
 
-                    Loyalty Rules
+                    Loyalty Configuration
 
                 </h5>
 
@@ -99,10 +166,25 @@
 
                     </label>
 
-                    <input
-                        id="settingReward"
-                        type="number"
-                        class="form-control">
+                    <div class="input-group">
+
+                        <input
+
+                            id="settingReward"
+
+                            type="number"
+
+                            class="form-control">
+
+                        <span
+
+                            class="input-group-text">
+
+                            Visit
+
+                        </span>
+
+                    </div>
 
                 </div>
 
@@ -110,29 +192,189 @@
 
                     <label class="form-label">
 
-                        Gold Target
+                        Gold Member
 
                     </label>
 
-                    <input
-                        id="settingGold"
-                        type="number"
-                        class="form-control">
+                    <div class="input-group">
+
+                        <input
+
+                            id="settingGold"
+
+                            type="number"
+
+                            class="form-control">
+
+                        <span
+
+                            class="input-group-text">
+
+                            Visit
+
+                        </span>
+
+                    </div>
 
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-0">
 
                     <label class="form-label">
 
-                        Platinum Target
+                        Platinum Member
 
                     </label>
 
-                    <input
-                        id="settingPlatinum"
-                        type="number"
-                        class="form-control">
+                    <div class="input-group">
+
+                        <input
+
+                            id="settingPlatinum"
+
+                            type="number"
+
+                            class="form-control">
+
+                        <span
+
+                            class="input-group-text">
+
+                            Visit
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+                <!-- =======================================
+        INFORMATION PANEL
+        ======================================== -->
+
+        <div class="col-12">
+
+            <div class="table-card">
+
+                <div class="row">
+
+                    <div class="col-lg-6">
+
+                        <h5 class="mb-3">
+
+                            Penjelasan Loyalty
+
+                        </h5>
+
+                        <table class="table table-borderless">
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td width="170">
+
+                                        Reward Target
+
+                                    </td>
+
+                                    <td>
+
+                                        Jumlah visit untuk mendapatkan
+                                        reward gratis.
+
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <td>
+
+                                        Gold Target
+
+                                    </td>
+
+                                    <td>
+
+                                        Jumlah visit agar member naik
+                                        menjadi Gold.
+
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <td>
+
+                                        Platinum Target
+
+                                    </td>
+
+                                    <td>
+
+                                        Jumlah visit agar member naik
+                                        menjadi Platinum.
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <div class="col-lg-6">
+
+                        <div class="alert alert-success mb-0">
+
+                            <h6 class="fw-bold">
+
+                                Catatan
+
+                            </h6>
+
+                            <ul class="mb-0">
+
+                                <li>
+
+                                    Perubahan akan langsung digunakan
+                                    oleh sistem CRM.
+
+                                </li>
+
+                                <li>
+
+                                    Member lama akan mengikuti
+                                    konfigurasi terbaru.
+
+                                </li>
+
+                                <li>
+
+                                    Reward dihitung otomatis berdasarkan
+                                    jumlah visit.
+
+                                </li>
+
+                                <li>
+
+                                    Tidak diperlukan restart aplikasi
+                                    setelah menyimpan konfigurasi.
+
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
