@@ -1,53 +1,144 @@
-<section id="visitsPage" class="page" style="display:none;">
+<!-- ==========================================================
+FILE : visits.html
+PART (1)
+PROJECT : Neighbor Place CRM v2
+========================================================== -->
 
-    <div class="topbar">
+<section
+
+    id="visitsPage"
+
+    class="page"
+
+    style="display:none;">
+
+    <!-- ===========================================
+    PAGE HEADER
+    ============================================ -->
+
+    <div
+
+        class="d-flex
+
+               justify-content-between
+
+               align-items-center
+
+               flex-wrap
+
+               mb-4">
 
         <div>
 
-            <h2>Visits</h2>
+            <h2 class="fw-bold mb-1">
 
-            <small>Riwayat Kunjungan Member</small>
+                Visit History
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Riwayat kunjungan seluruh member
+
+            </p>
 
         </div>
 
-        <button
-            class="btn btn-success"
-            onclick="openVisitModal()">
+        <div class="d-flex gap-2">
 
-            <i class="bi bi-plus-circle"></i>
+            <button
 
-            Tambah Visit
+                class="btn btn-outline-success"
 
-        </button>
+                onclick="loadVisits()">
+
+                <i class="bi bi-arrow-repeat"></i>
+
+                Refresh
+
+            </button>
+
+            <button
+
+                class="btn btn-success"
+
+                onclick="openVisitModal()">
+
+                <i class="bi bi-plus-circle-fill"></i>
+
+                Tambah Visit
+
+            </button>
+
+        </div>
 
     </div>
 
+    <!-- ===========================================
+    FILTER
+    ============================================ -->
+
     <div class="table-card">
 
-        <div class="row mb-4">
+        <div class="row g-3">
 
-            <div class="col-md-5">
+            <div class="col-lg-5">
 
-                <input
-                    id="searchVisit"
-                    class="form-control"
-                    placeholder="Cari Member ID / Nama / Plat">
+                <label class="form-label">
+
+                    Cari Visit
+
+                </label>
+
+                <div class="search-group">
+
+                    <i class="bi bi-search"></i>
+
+                    <input
+
+                        id="searchVisit"
+
+                        class="form-control"
+
+                        placeholder="Member ID, Nama atau Plat Nomor">
+
+                </div>
 
             </div>
 
-            <div class="col-md-3">
+            <div class="col-lg-3">
+
+                <label class="form-label">
+
+                    Tanggal
+
+                </label>
 
                 <input
+
                     id="visitDate"
+
                     type="date"
+
                     class="form-control">
 
             </div>
 
-            <div class="col-md-2">
+            <div
+
+                class="col-lg-2
+
+                       d-flex
+
+                       align-items-end">
 
                 <button
-                    class="btn btn-outline-success w-100">
+
+                    class="btn btn-outline-success w-100"
+
+                    onclick="searchVisit()">
+
+                    <i class="bi bi-funnel"></i>
 
                     Filter
 
@@ -55,13 +146,21 @@
 
             </div>
 
-            <div class="col-md-2">
+            <div
+
+                class="col-lg-2
+
+                       d-flex
+
+                       align-items-end">
 
                 <button
+
                     class="btn btn-outline-secondary w-100"
+
                     onclick="loadVisits()">
 
-                    Refresh
+                    Reset
 
                 </button>
 
@@ -69,27 +168,59 @@
 
         </div>
 
+    </div>
+
+    <!-- ===========================================
+    TABLE
+    ============================================ -->
+
+    <div class="table-card">
+
         <div class="table-responsive">
 
-            <table class="table table-hover align-middle">
+            <table
+
+                class="table
+
+                       table-hover
+
+                       align-middle">
 
                 <thead>
 
                     <tr>
 
-                        <th>Visit ID</th>
+                        <th width="140">
 
-                        <th>Member ID</th>
+                            Visit ID
 
-                        <th>Tanggal</th>
+                        </th>
 
-                        <th>Admin</th>
+                        <th>
+
+                            Member ID
+
+                        </th>
+
+                        <th>
+
+                            Tanggal Visit
+
+                        </th>
+
+                        <th>
+
+                            Admin
+
+                        </th>
 
                     </tr>
 
                 </thead>
 
-                <tbody id="visitTableBody">
+                <tbody
+
+                    id="visitTableBody">
 
                 </tbody>
 
@@ -98,65 +229,157 @@
         </div>
 
     </div>
+        <!-- ===========================================
+    VISIT MODAL
+    ============================================ -->
 
-</section>
+    <div
 
-<div
-    class="modal fade"
-    id="visitModal"
-    tabindex="-1">
+        class="modal fade"
 
-    <div class="modal-dialog">
+        id="visitModal"
 
-        <div class="modal-content">
+        tabindex="-1"
 
-            <div class="modal-header">
+        aria-hidden="true">
 
-                <h5 class="modal-title">
+        <div class="modal-dialog">
 
-                    Tambah Visit
+            <div class="modal-content">
 
-                </h5>
+                <div class="modal-header">
 
-                <button
-                    class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
+                    <h5 class="modal-title">
 
-            </div>
+                        Tambah Visit
 
-            <div class="modal-body">
+                    </h5>
 
-                <div class="mb-3">
+                    <button
 
-                    <label>Member ID</label>
+                        type="button"
 
-                    <input
-                        id="visitMemberID"
-                        class="form-control"
-                        placeholder="NP-26-000001">
+                        class="btn-close"
+
+                        data-bs-dismiss="modal">
+
+                    </button>
 
                 </div>
 
-            </div>
+                <div class="modal-body">
 
-            <div class="modal-footer">
+                    <div class="mb-3">
 
-                <button
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
+                        <label class="form-label">
 
-                    Batal
+                            Member ID
 
-                </button>
+                        </label>
 
-                <button
-                    class="btn btn-success"
-                    onclick="saveVisit()">
+                        <input
 
-                    Simpan Visit
+                            id="visitMemberID"
 
-                </button>
+                            class="form-control"
+
+                            placeholder="Contoh : NP-26-000001">
+
+                        <small class="text-muted">
+
+                            Masukkan Member ID untuk menambahkan
+                            satu kunjungan baru.
+
+                        </small>
+
+                    </div>
+
+                    <div class="alert alert-light border">
+
+                        <div class="d-flex gap-3">
+
+                            <i class="bi bi-info-circle-fill fs-4 text-success"></i>
+
+                            <div>
+
+                                <strong>
+
+                                    Informasi
+
+                                </strong>
+
+                                <div class="small text-muted mt-1">
+
+                                    Setelah visit berhasil disimpan,
+                                    sistem akan otomatis:
+
+                                    <ul class="mt-2 mb-0">
+
+                                        <li>
+
+                                            Menambah jumlah visit member
+
+                                        </li>
+
+                                        <li>
+
+                                            Menghitung ulang level member
+
+                                        </li>
+
+                                        <li>
+
+                                            Mengecek status reward
+
+                                        </li>
+
+                                        <li>
+
+                                            Memperbarui Dashboard
+
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+
+                        type="button"
+
+                        class="btn btn-secondary"
+
+                        data-bs-dismiss="modal">
+
+                        Batal
+
+                    </button>
+
+                    <button
+
+                        type="button"
+
+                        class="btn btn-success"
+
+                        onclick="saveVisit()">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Simpan Visit
+
+                    </button>
+
+                </div>
 
             </div>
 
@@ -164,4 +387,4 @@
 
     </div>
 
-</div>
+</section>
