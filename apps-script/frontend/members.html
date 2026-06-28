@@ -1,19 +1,67 @@
-<section id="membersPage" class="page" style="display:none;">
+<!-- ==========================================================
+FILE : members.html
+PART (1)
+PROJECT : Neighbor Place CRM v2
+========================================================== -->
 
-    <div class="topbar">
+<section
+
+    id="membersPage"
+
+    class="page"
+
+    style="display:none;">
+
+    <!-- ===========================================
+    HEADER
+    ============================================ -->
+
+    <div
+
+        class="d-flex
+
+               justify-content-between
+
+               align-items-center
+
+               flex-wrap
+
+               mb-4">
 
         <div>
 
-            <h2>Members</h2>
+            <h2 class="fw-bold mb-1">
 
-            <small>Manajemen Member Neighbor Place</small>
+                Members
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Kelola seluruh data member Neighbor Place
+
+            </p>
 
         </div>
 
         <div class="d-flex gap-2">
 
             <button
+
+                class="btn btn-outline-success"
+
+                onclick="loadMembers()">
+
+                <i class="bi bi-arrow-repeat"></i>
+
+                Refresh
+
+            </button>
+
+            <button
+
                 class="btn btn-success"
+
                 onclick="openMemberModal()">
 
                 <i class="bi bi-person-plus-fill"></i>
@@ -26,61 +74,133 @@
 
     </div>
 
+    <!-- ===========================================
+    FILTER
+    ============================================ -->
+
     <div class="table-card">
 
-        <div class="row mb-4">
+        <div class="row g-3">
 
-            <div class="col-md-5">
+            <div class="col-lg-5">
 
-                <input
-                    id="searchMember"
-                    class="form-control"
-                    placeholder="Cari Nama / Plat / No HP"
-                    onkeyup="searchMemberRealtime()">
+                <label class="form-label">
+
+                    Cari Member
+
+                </label>
+
+                <div class="search-group">
+
+                    <i class="bi bi-search"></i>
+
+                    <input
+
+                        id="searchMember"
+
+                        class="form-control"
+
+                        placeholder="Nama, Plat Nomor, No HP, Member ID">
+
+                </div>
 
             </div>
 
-            <div class="col-md-3">
+            <div class="col-lg-3">
+
+                <label class="form-label">
+
+                    Level
+
+                </label>
 
                 <select
+
                     id="filterLevel"
+
                     class="form-select">
 
-                    <option value="">Semua Level</option>
+                    <option value="">
 
-                    <option>Silver</option>
+                        Semua Level
 
-                    <option>Gold</option>
+                    </option>
 
-                    <option>Platinum</option>
+                    <option>
+
+                        Silver
+
+                    </option>
+
+                    <option>
+
+                        Gold
+
+                    </option>
+
+                    <option>
+
+                        Platinum
+
+                    </option>
 
                 </select>
 
             </div>
 
-            <div class="col-md-2">
+            <div class="col-lg-2">
+
+                <label class="form-label">
+
+                    Status
+
+                </label>
 
                 <select
+
                     id="filterStatus"
+
                     class="form-select">
 
-                    <option value="">Semua Status</option>
+                    <option value="">
 
-                    <option>Active</option>
+                        Semua
 
-                    <option>Inactive</option>
+                    </option>
+
+                    <option>
+
+                        Active
+
+                    </option>
+
+                    <option>
+
+                        Inactive
+
+                    </option>
 
                 </select>
 
             </div>
 
-            <div class="col-md-2">
+            <div
+
+                class="col-lg-2
+
+                       d-flex
+
+                       align-items-end">
 
                 <button
-                    class="btn btn-outline-success w-100"
-                    onclick="loadMembers()">
 
-                    Refresh
+                    class="btn btn-outline-success w-100"
+
+                    onclick="searchMember()">
+
+                    <i class="bi bi-funnel"></i>
+
+                    Filter
 
                 </button>
 
@@ -88,31 +208,73 @@
 
         </div>
 
+    </div>
+
+    <!-- ===========================================
+    TABLE
+    ============================================ -->
+
+    <div class="table-card">
+
         <div class="table-responsive">
 
-            <table class="table table-hover align-middle">
+            <table
+
+                class="table
+
+                       table-hover
+
+                       align-middle">
 
                 <thead>
 
                     <tr>
 
-                        <th width="140">Member ID</th>
+                        <th width="140">
 
-                        <th>Nama</th>
+                            Member ID
 
-                        <th>No HP</th>
+                        </th>
 
-                        <th>Plat</th>
+                        <th>
 
-                        <th>Kendaraan</th>
+                            Nama
 
-                        <th>Level</th>
+                        </th>
 
-                        <th>Status</th>
+                        <th>
 
-                        <th width="220">
+                            No HP
 
-                            Aksi
+                        </th>
+
+                        <th>
+
+                            Plat Nomor
+
+                        </th>
+
+                        <th>
+
+                            Kendaraan
+
+                        </th>
+
+                        <th width="120">
+
+                            Level
+
+                        </th>
+
+                        <th width="120">
+
+                            Status
+
+                        </th>
+
+                        <th width="240">
+
+                            Action
 
                         </th>
 
@@ -120,7 +282,9 @@
 
                 </thead>
 
-                <tbody id="memberTableBody">
+                <tbody
+
+                    id="memberTableBody">
 
                 </tbody>
 
@@ -129,145 +293,188 @@
         </div>
 
     </div>
+        <!-- ===========================================
+    MEMBER MODAL
+    ============================================ -->
 
-</section>
+    <div
 
-<!-- MEMBER MODAL -->
+        class="modal fade"
 
-<div
-    class="modal fade"
-    id="memberModal"
-    tabindex="-1"
-    aria-hidden="true">
+        id="memberModal"
 
-    <div class="modal-dialog">
+        tabindex="-1"
 
-        <div class="modal-content">
+        aria-hidden="true">
 
-            <div class="modal-header">
+        <div class="modal-dialog modal-lg">
 
-                <h5
-                    id="memberModalTitle"
-                    class="modal-title">
+            <div class="modal-content">
 
-                    Tambah Member
+                <div class="modal-header">
 
-                </h5>
+                    <h5
 
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close">
-                </button>
+                        class="modal-title"
+
+                        id="memberModalTitle">
+
+                        Tambah Member
+
+                    </h5>
+
+                    <button
+
+                        type="button"
+
+                        class="btn-close"
+
+                        data-bs-dismiss="modal">
+
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Nama Member
+
+                            </label>
+
+                            <input
+
+                                id="memberName"
+
+                                type="text"
+
+                                class="form-control"
+
+                                placeholder="Masukkan nama member">
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Nomor HP
+
+                            </label>
+
+                            <input
+
+                                id="memberPhone"
+
+                                type="text"
+
+                                class="form-control"
+
+                                placeholder="08xxxxxxxxxx">
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Plat Nomor
+
+                            </label>
+
+                            <input
+
+                                id="memberPlate"
+
+                                type="text"
+
+                                class="form-control"
+
+                                style="text-transform:uppercase"
+
+                                placeholder="D 1234 ABC">
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Jenis Kendaraan
+
+                            </label>
+
+                            <select
+
+                                id="memberVehicle"
+
+                                class="form-select">
+
+                                <option value="">
+
+                                    Pilih Kendaraan
+
+                                </option>
+
+                                <option>
+
+                                    Motor
+
+                                </option>
+
+                                <option>
+
+                                    Mobil
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+
+                        type="button"
+
+                        class="btn btn-secondary"
+
+                        data-bs-dismiss="modal">
+
+                        Batal
+
+                    </button>
+
+                    <button
+
+                        type="button"
+
+                        class="btn btn-success"
+
+                        onclick="saveMember()">
+
+                        <i class="bi bi-floppy"></i>
+
+                        Simpan Member
+
+                    </button>
+
+                </div>
 
             </div>
-
-            <div class="modal-body">
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        Nama
-
-                    </label>
-
-                    <input
-                        id="memberName"
-                        type="text"
-                        class="form-control">
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        No HP
-
-                    </label>
-
-                    <input
-                        id="memberPhone"
-                        type="text"
-                        class="form-control">
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        Plat Nomor
-
-                    </label>
-
-                    <input
-                        id="memberPlate"
-                        type="text"
-                        class="form-control"
-                        style="text-transform:uppercase;">
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        Jenis Kendaraan
-
-                    </label>
-
-                    <select
-                        id="memberVehicle"
-                        class="form-select">
-
-                        <option value="">
-
-                            Pilih
-
-                        </option>
-
-                        <option>
-
-                            Motor
-
-                        </option>
-
-                        <option>
-
-                            Mobil
-
-                        </option>
-
-                    </select>
-
-                </div>
-           <div class="modal-footer">
-
-    <button
-        type="button"
-        class="btn btn-secondary"
-        data-bs-dismiss="modal">
-
-        Batal
-
-    </button>
-
-    <button
-        type="button"
-        class="btn btn-success"
-        onclick="saveMember()">
-
-        Simpan
-
-    </button>
-
-</div>
 
         </div>
 
     </div>
 
-</div>
+</section>
