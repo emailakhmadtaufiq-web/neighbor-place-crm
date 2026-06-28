@@ -1,122 +1,274 @@
-<section id="dashboardPage" class="page">
+<!-- ==========================================================
+FILE : dashboard.html
+PART (1)
+PROJECT : Neighbor Place CRM v2
+========================================================== -->
 
-    <div class="topbar">
+<section
+
+    id="dashboardPage"
+
+    class="page">
+
+    <!-- ===========================================
+    PAGE HEADER
+    ============================================ -->
+
+    <div class="d-flex
+
+                justify-content-between
+
+                align-items-center
+
+                flex-wrap
+
+                mb-4">
 
         <div>
 
-            <h2>Dashboard</h2>
+            <h2 class="fw-bold mb-1">
 
-            <small>Neighbor Place CRM</small>
+                Dashboard
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Ringkasan aktivitas Neighbor Place CRM
+
+            </p>
 
         </div>
 
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex gap-2">
 
-            <span class="status">
+            <button
 
-                🟢 Online
+                class="btn btn-outline-success"
 
-            </span>
+                onclick="refreshAll()">
+
+                <i class="bi bi-arrow-repeat"></i>
+
+                Refresh
+
+            </button>
 
         </div>
 
     </div>
+
+    <!-- ===========================================
+    SUMMARY CARD
+    ============================================ -->
 
     <div class="cards">
 
         <div class="card-box">
 
-            <h6>Total Member</h6>
+            <h6>
 
-            <h2 id="totalMember">0</h2>
+                Total Member
 
-        </div>
+            </h6>
 
-        <div class="card-box">
+            <h2 id="totalMember">
 
-            <h6>Total Kendaraan</h6>
+                0
 
-            <h2 id="totalVehicle">0</h2>
-
-        </div>
-
-        <div class="card-box">
-
-            <h6>Silver Member</h6>
-
-            <h2 id="silverMember">0</h2>
+            </h2>
 
         </div>
 
         <div class="card-box">
 
-            <h6>Gold Member</h6>
+            <h6>
 
-            <h2 id="goldMember">0</h2>
+                Total Kendaraan
 
-        </div>
+            </h6>
 
-        <div class="card-box">
+            <h2 id="totalVehicle">
 
-            <h6>Platinum Member</h6>
+                0
 
-            <h2 id="platinumMember">0</h2>
-
-        </div>
-
-        <div class="card-box">
-
-            <h6>Reward Ready</h6>
-
-            <h2 id="rewardReady">0</h2>
+            </h2>
 
         </div>
 
         <div class="card-box">
 
-            <h6>Visit Hari Ini</h6>
+            <h6>
 
-            <h2 id="visitToday">0</h2>
+                Silver Member
+
+            </h6>
+
+            <h2 id="silverMember">
+
+                0
+
+            </h2>
 
         </div>
 
         <div class="card-box">
 
-            <h6>Visit Bulan Ini</h6>
+            <h6>
 
-            <h2 id="visitMonth">0</h2>
+                Gold Member
+
+            </h6>
+
+            <h2 id="goldMember">
+
+                0
+
+            </h2>
 
         </div>
 
         <div class="card-box">
 
-            <h6>Member Baru Bulan Ini</h6>
+            <h6>
 
-            <h2 id="newMemberMonth">0</h2>
+                Platinum Member
+
+            </h6>
+
+            <h2 id="platinumMember">
+
+                0
+
+            </h2>
+
+        </div>
+
+        <div class="card-box">
+
+            <h6>
+
+                Reward Siap Claim
+
+            </h6>
+
+            <h2 id="rewardReady">
+
+                0
+
+            </h2>
+
+        </div>
+
+        <div class="card-box">
+
+            <h6>
+
+                Visit Hari Ini
+
+            </h6>
+
+            <h2 id="visitToday">
+
+                0
+
+            </h2>
+
+        </div>
+
+        <div class="card-box">
+
+            <h6>
+
+                Visit Bulan Ini
+
+            </h6>
+
+            <h2 id="visitMonth">
+
+                0
+
+            </h2>
+
+        </div>
+
+        <div class="card-box">
+
+            <h6>
+
+                Member Baru
+
+            </h6>
+
+            <h2 id="newMemberMonth">
+
+                0
+
+            </h2>
 
         </div>
 
     </div>
 
+    <!-- ===========================================
+    SECOND ROW
+    ============================================ -->
+
     <div class="row mt-4">
+
+        <!-- LEFT -->
 
         <div class="col-lg-8">
 
             <div class="table-card">
 
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div
 
-                    <h5 class="mb-0">
+                    class="d-flex
 
-                        Aktivitas Terbaru
+                           justify-content-between
 
-                    </h5>
+                           align-items-center
+
+                           mb-3">
+
+                    <div>
+
+                        <h5 class="mb-1">
+
+                            Aktivitas Terbaru
+
+                        </h5>
+
+                        <small class="text-muted">
+
+                            Aktivitas sistem terbaru
+
+                        </small>
+
+                    </div>
 
                 </div>
 
                 <div id="dashboardLogs">
 
-                    Belum ada aktivitas.
+                    <div class="empty-state">
+
+                        <i class="bi bi-clock-history"></i>
+
+                        <h5>
+
+                            Belum ada aktivitas
+
+                        </h5>
+
+                        <p>
+
+                            Aktivitas member akan tampil di sini.
+
+                        </p>
+
+                    </div>
 
                 </div>
 
@@ -124,67 +276,241 @@
 
         </div>
 
+        <!-- RIGHT -->
+
         <div class="col-lg-4">
 
             <div class="table-card">
 
-                <h5 class="mb-3">
+                <h5 class="mb-4">
 
-                    Informasi
+                    Business Information
 
                 </h5>
 
-                <table class="table table-borderless mb-0">
+                <table
 
-                    <tr>
+                    class="table
 
-                        <td>Business</td>
+                           table-borderless
 
-                        <td id="businessName">
+                           align-middle">
 
-                            Neighbor Place
+                    <tbody>
 
-                        </td>
+                        <tr>
 
-                    </tr>
+                            <td width="40%">
 
-                    <tr>
+                                Nama
 
-                        <td>Reward</td>
+                            </td>
 
-                        <td id="rewardTarget">
+                            <td>
 
-                            8 Visit
+                                <strong
 
-                        </td>
+                                    id="businessName">
 
-                    </tr>
+                                    Neighbor Place
 
-                    <tr>
+                                </strong>
 
-                        <td>Gold</td>
+                            </td>
 
-                        <td id="goldTarget">
+                        </tr>
 
-                            20 Visit
+                        <tr>
 
-                        </td>
+                            <td>
 
-                    </tr>
+                                Reward
 
-                    <tr>
+                            </td>
 
-                        <td>Platinum</td>
+                            <td
 
-                        <td id="platinumTarget">
+                                id="rewardTarget">
 
-                            40 Visit
+                                8 Visit
 
-                        </td>
+                            </td>
 
-                    </tr>
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                Gold
+
+                            </td>
+
+                            <td
+
+                                id="goldTarget">
+
+                                20 Visit
+
+                            </td>
+
+                        </tr>
+                                                <tr>
+
+                            <td>
+
+                                Platinum
+
+                            </td>
+
+                            <td
+
+                                id="platinumTarget">
+
+                                40 Visit
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                Status
+
+                            </td>
+
+                            <td>
+
+                                <span
+
+                                    class="badge bg-success">
+
+                                    Online
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
 
                 </table>
+
+            </div>
+
+            <!-- ===========================================
+            QUICK ACTION
+            ============================================ -->
+
+            <div class="table-card mt-4">
+
+                <h5 class="mb-4">
+
+                    Quick Action
+
+                </h5>
+
+                <div class="d-grid gap-2">
+
+                    <button
+
+                        class="btn btn-success"
+
+                        onclick="openMemberModal()">
+
+                        <i class="bi bi-person-plus-fill"></i>
+
+                        Tambah Member
+
+                    </button>
+
+                    <button
+
+                        class="btn btn-outline-success"
+
+                        onclick="openVisitModal()">
+
+                        <i class="bi bi-car-front-fill"></i>
+
+                        Tambah Visit
+
+                    </button>
+
+                    <button
+
+                        class="btn btn-outline-success"
+
+                        onclick="openPage('membersPage')">
+
+                        <i class="bi bi-people-fill"></i>
+
+                        Kelola Member
+
+                    </button>
+
+                    <button
+
+                        class="btn btn-outline-success"
+
+                        onclick="openPage('rewardsPage')">
+
+                        <i class="bi bi-gift-fill"></i>
+
+                        Kelola Reward
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===========================================
+    FOOTER INFORMATION
+    ============================================ -->
+
+    <div class="table-card mt-4">
+
+        <div
+
+            class="row
+
+                   align-items-center">
+
+            <div class="col-lg-6">
+
+                <h5 class="mb-2">
+
+                    Neighbor Place CRM
+
+                </h5>
+
+                <p class="text-muted mb-0">
+
+                    Dashboard ini digunakan untuk
+                    memonitor member,
+                    kunjungan,
+                    reward,
+                    dan konfigurasi loyalty
+                    secara real-time.
+
+                </p>
+
+            </div>
+
+            <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
+
+                <span class="text-muted">
+
+                    Version 2.0
+
+                </span>
 
             </div>
 
