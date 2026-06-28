@@ -137,7 +137,8 @@
 <div
     class="modal fade"
     id="memberModal"
-    tabindex="-1">
+    tabindex="-1"
+    aria-hidden="true">
 
     <div class="modal-dialog">
 
@@ -145,51 +146,66 @@
 
             <div class="modal-header">
 
-    <h5
-        id="memberModalTitle"
-        class="modal-title">
+                <h5
+                    id="memberModalTitle"
+                    class="modal-title">
 
-        Tambah Member
+                    Tambah Member
 
-    </h5>
+                </h5>
 
-    <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal">
-    </button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
 
-</div>
-                
+            </div>
 
             <div class="modal-body">
 
                 <div class="mb-3">
 
-                    <label>Nama</label>
+                    <label class="form-label">
+
+                        Nama
+
+                    </label>
 
                     <input
                         id="memberName"
+                        type="text"
                         class="form-control">
 
                 </div>
 
                 <div class="mb-3">
 
-                    <label>No HP</label>
+                    <label class="form-label">
+
+                        No HP
+
+                    </label>
 
                     <input
                         id="memberPhone"
+                        type="text"
                         class="form-control">
 
                 </div>
 
                 <div class="mb-3">
 
-                    <label>Plat Nomor</label>
+                    <label class="form-label">
+
+                        Plat Nomor
+
+                    </label>
 
                     <input
                         id="memberPlate"
+                        type="text"
                         class="form-control"
                         style="text-transform:uppercase;">
 
@@ -197,43 +213,58 @@
 
                 <div class="mb-3">
 
-                    <label>Jenis Kendaraan</label>
+                    <label class="form-label">
+
+                        Jenis Kendaraan
+
+                    </label>
 
                     <select
                         id="memberVehicle"
                         class="form-select">
 
-                        <option value="">Pilih</option>
+                        <option value="">
 
-                        <option>Motor</option>
+                            Pilih
 
-                        <option>Mobil</option>
+                        </option>
+
+                        <option>
+
+                            Motor
+
+                        </option>
+
+                        <option>
+
+                            Mobil
+
+                        </option>
 
                     </select>
 
                 </div>
+           <div class="modal-footer">
 
-            </div>
+    <button
+        type="button"
+        class="btn btn-secondary"
+        data-bs-dismiss="modal">
 
-            <div class="modal-footer">
+        Batal
 
-                <button
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
+    </button>
 
-                    Batal
+    <button
+        type="button"
+        class="btn btn-success"
+        onclick="saveMember()">
 
-                </button>
+        Simpan
 
-                <button
-                    class="btn btn-success"
-                    onclick="saveMember()">
+    </button>
 
-                    Simpan
-
-                </button>
-
-            </div>
+</div>
 
         </div>
 
