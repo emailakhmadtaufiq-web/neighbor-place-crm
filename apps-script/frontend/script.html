@@ -1579,7 +1579,7 @@ Reward member akan muncul di sini.
 
 <td>${item[1]}</td>
 
-<td>${item[2]}</td>
+<td>${formatDate(item[5])}</td>
 
 <td>${badge}</td>
 
@@ -1759,6 +1759,25 @@ function loadSettings(){
     .withSuccessHandler(function(result){
 
         settings=result || {};
+        setHTML(
+    "dashboardBusinessName",
+    settings.BusinessName || "Neighbor Place"
+);
+
+setHTML(
+    "dashboardRewardTarget",
+    settings.RewardTarget || "-"
+);
+
+setHTML(
+    "dashboardGoldTarget",
+    settings.GoldTarget || "-"
+);
+
+setHTML(
+    "dashboardPlatinumTarget",
+    settings.PlatinumTarget || "-"
+);
 
         setInput(
 
