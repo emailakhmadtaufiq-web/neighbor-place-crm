@@ -64,7 +64,8 @@ sheet.appendRow([
   memberId,
   "Free Wash",
   "Ready",
-  ""
+  "",
+  now()
 ]);
 
 return true;
