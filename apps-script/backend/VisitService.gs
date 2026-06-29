@@ -75,7 +75,7 @@ function createVisit(memberId) {
   const visitDate = new Date();
 
   const rewardStatus =
-    visitNumber >= CONFIG.REWARD_TARGET
+    visitNumber >= rewardTarget()
       ? "Ready"
       : "Progress";
 
