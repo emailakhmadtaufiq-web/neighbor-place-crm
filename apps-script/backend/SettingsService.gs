@@ -59,6 +59,44 @@ function updateSetting(key, value) {
   return true;
 
 }
+function saveAllSettings(data) {
+
+  const sheet = getSheet(CONFIG.SHEET_SETTINGS);
+
+  const values = sheet.getDataRange().getValues();
+
+  const map = {};
+
+  for (let i = 1; i < values.length; i++) {
+    map[values[i][0]] = i + 1;
+  }
+
+  Object.keys(data).forEach(function(key) {
+
+    if (map[key]) {
+
+      sheet.getRange(map[key], 2).setValue(data[key]);
+
+    } else {
+
+      sheet.appendRow([key, data[key]]);
+
+    }
+
+  });
+
+  createLog(
+    "UPDATE_SETTINGS",
+    "",
+    "Konfigurasi aplikasi diperbarui"
+  );
+
+  return {
+    success: true,
+    message: "Setting berhasil disimpan."
+  };
+
+}
 
 function rewardTarget() {
 
