@@ -50,7 +50,7 @@ function initializeApplication(){
 
     openPage("dashboardPage");
 
-    refreshAll();
+    loadMembers();
 
     loadSettings();
 
@@ -436,9 +436,37 @@ REFRESH
 
 function refreshAll(){
 
-    loadMembers();
+    const active = document.querySelector(
+        ".sidebar .menu-item.active"
+    );
 
-}
+    if(!active){
+        return;
+    }
+
+    switch(active.dataset.page){
+
+        case "dashboardPage":
+            loadDashboard();
+            break;
+
+        case "membersPage":
+            loadMembers();
+            break;
+
+        case "visitsPage":
+            loadVisits();
+            break;
+
+        case "rewardsPage":
+            loadRewards();
+            break;
+
+        case "settingsPage":
+            loadSettings();
+            break;
+
+    }
 
 }
 /* ==========================================================
@@ -1649,9 +1677,11 @@ function claimReward(id){
 
         loadRewards();
 
-        loadDashboard();
+loadDashboard();
 
-        loadMembers();
+loadMembers();
+
+loadVisits();
 
     })
 
@@ -1919,19 +1949,19 @@ function updateSettingQueue(
 
     if(index>=items.length){
 
-        hideLoading();
+    hideLoading();
 
-        showToast(
+    showToast(
+        "Setting berhasil disimpan."
+    );
 
-            "Setting berhasil disimpan."
+    loadSettings();
 
-        );
+    loadDashboard();
 
-        loadDashboard();
+    return;
 
-        return;
-
-    }
+}
 
     google.script.run
 
