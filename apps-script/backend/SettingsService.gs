@@ -61,13 +61,25 @@ function updateSetting(key, value) {
 }
 
 function rewardTarget() {
-  return Number(getSetting("RewardTarget"));
+
+  const value = Number(getSetting("RewardTarget"));
+
+  return value || CONFIG.REWARD_TARGET;
+
 }
 
 function goldTarget() {
-  return Number(getSetting("GoldTarget"));
+
+  const value = Number(getSetting("GoldTarget"));
+
+  return value || CONFIG.GOLD_TARGET;
+
 }
 
 function platinumTarget() {
-  return Number(getSetting("PlatinumTarget"));
+
+  const value = Number(getSetting("PlatinumTarget"));
+
+  return value || CONFIG.PLATINUM_TARGET;
+
 }
