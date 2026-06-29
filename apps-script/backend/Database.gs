@@ -100,12 +100,13 @@ function createRewardsSheet() {
     CONFIG.SHEET_REWARDS,
 
     [
-      "RewardID",
-      "MemberID",
-      "RewardName",
-      "Status",
-      "ClaimDate"
-    ]
+  "RewardID",
+  "MemberID",
+  "RewardName",
+  "Status",
+  "ClaimDate",
+  "CreatedAt"
+]
 
   );
 
