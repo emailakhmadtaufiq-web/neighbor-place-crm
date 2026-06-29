@@ -38,29 +38,36 @@ function checkReward(memberId) {
 
   const rewards = sheet.getDataRange().getValues();
 
-  for (let i = 1; i < rewards.length; i++) {
+  let totalReward = 0;
 
-    if (
-      rewards[i][1] === memberId &&
-      rewards[i][3] === "Ready"
-    ) {
-      return true;
-    }
+for (let i = 1; i < rewards.length; i++) {
+
+  if (rewards[i][1] === memberId) {
+
+    totalReward++;
 
   }
 
+}
+const shouldReward =
+  Math.floor(totalVisit / CONFIG.REWARD_TARGET);
+
+if (totalReward >= shouldReward) {
+
+  return true;
+
+}
+const rewardId = generateRewardID();
+
 sheet.appendRow([
-  generateRewardID(),
+  rewardId,
   memberId,
   "Free Wash",
   "Ready",
   ""
 ]);
 
-  logClaimReward(rewardId);
-  );
-
-  return true;
+return true;
 
 }
 
