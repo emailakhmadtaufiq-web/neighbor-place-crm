@@ -65,7 +65,7 @@ function logDeactivateMember(memberId) {
 
 }
 
-function logVisit(memberId) {
+function logCreateVisit(memberId) {
 
   createLog(
     "CREATE_VISIT",
@@ -75,7 +75,7 @@ function logVisit(memberId) {
 
 }
 
-function logReward(memberId) {
+function logClaimReward(memberId) {
 
   createLog(
     "CLAIM_REWARD",
