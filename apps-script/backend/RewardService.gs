@@ -32,7 +32,7 @@ function checkReward(memberId) {
 
   if (totalVisit === 0) return false;
 
-  if (totalVisit % CONFIG.REWARD_TARGET !== 0) return false;
+  if (totalVisit % rewardTarget() !== 0) return false;
 
   const sheet = getSheet(CONFIG.SHEET_REWARDS);
 
@@ -50,7 +50,7 @@ for (let i = 1; i < rewards.length; i++) {
 
 }
 const shouldReward =
-  Math.floor(totalVisit / CONFIG.REWARD_TARGET);
+  Math.floor(totalVisit / rewardTarget());
 
 if (totalReward >= shouldReward) {
 
@@ -134,15 +134,15 @@ function updateMemberLevel(memberId) {
 
   let level = CONFIG.LEVEL_SILVER;
 
-  if (totalVisit >= CONFIG.PLATINUM_TARGET) {
+  if (totalVisit >= platinumTarget()) {
 
     level = CONFIG.LEVEL_PLATINUM;
 
-  } else if (totalVisit >= CONFIG.GOLD_TARGET) {
+} else if (totalVisit >= goldTarget()) {
 
     level = CONFIG.LEVEL_GOLD;
 
-  }
+}
 
   const sheet = getSheet(CONFIG.SHEET_MEMBERS);
 
