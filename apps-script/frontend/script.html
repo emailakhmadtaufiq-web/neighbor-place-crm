@@ -1877,115 +1877,47 @@ function saveSettings(){
 
     showLoading();
 
-    const items=[
+    const data = {
 
-        [
+        BusinessName: getValue("businessName"),
 
-            "BusinessName",
+        BusinessPhone: getValue("businessPhone"),
 
-            getValue("businessName")
+        BusinessAddress: getValue("businessAddress"),
 
-        ],
+        RewardTarget: getValue("settingReward"),
 
-        [
+        GoldTarget: getValue("settingGold"),
 
-            "BusinessPhone",
+        PlatinumTarget: getValue("settingPlatinum")
 
-            getValue("businessPhone")
-
-        ],
-
-        [
-
-            "BusinessAddress",
-
-            getValue("businessAddress")
-
-        ],
-
-        [
-
-            "RewardTarget",
-
-            getValue("settingReward")
-
-        ],
-
-        [
-
-            "GoldTarget",
-
-            getValue("settingGold")
-
-        ],
-
-        [
-
-            "PlatinumTarget",
-
-            getValue("settingPlatinum")
-
-        ]
-
-    ];
-
-    updateSettingQueue(
-
-        items,
-
-        0
-
-    );
-
-}
-
-function updateSettingQueue(
-
-    items,
-
-    index
-
-){
-
-    if(index>=items.length){
-
-    hideLoading();
-
-    showToast(
-        "Setting berhasil disimpan."
-    );
-
-    loadSettings();
-
-    loadDashboard();
-
-    return;
-
-}
+    };
 
     google.script.run
 
-    .withSuccessHandler(function(){
+    .withSuccessHandler(function(result){
 
-        updateSettingQueue(
+        hideLoading();
 
-            items,
+        if(!result.success){
 
-            index+1
+            showToast(result.message);
 
-        );
+            return;
+
+        }
+
+        showToast(result.message);
+
+        loadSettings();
+
+        loadDashboard();
 
     })
 
     .withFailureHandler(serverError)
 
-    .updateSetting(
-
-        items[index][0],
-
-        items[index][1]
-
-    );
+    .saveAllSettings(data);
 
 }
 
